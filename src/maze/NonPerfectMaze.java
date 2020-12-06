@@ -59,7 +59,7 @@ public class NonPerfectMaze extends AbstractIMaze {
 
   private void removeExtraWalls(int remainingWalls) {
     ArrayList<Integer> list = new ArrayList<Integer>(this.wallMap.keySet());
-    Collections.shuffle(list);
+    Collections.shuffle(list, AbstractIMaze.random);
     int wallsToBeRemoved = rows * (columns - 1) + columns * (rows - 1) - (rows * columns) + 1
             - remainingWalls;
     while (list.size() != 0 && wallsToBeRemoved != 0) {

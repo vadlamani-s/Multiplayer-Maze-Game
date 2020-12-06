@@ -250,6 +250,16 @@ public class FormView extends JFrame implements IView {
   }
 
   @Override
+  public void resetFocus() {
+    throw new IllegalArgumentException("Shouldn't be here");
+  }
+
+  @Override
+  public void setStatus(String text) {
+    throw new IllegalArgumentException("Shouldn't be here");
+  }
+
+  @Override
   public void setFeatures(Features features) {
     mazeSelection.addItemListener(l -> features.
             processMazeType((String) ((JComboBox) l.getSource()).getSelectedItem()));

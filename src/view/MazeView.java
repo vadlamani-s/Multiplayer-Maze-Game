@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.*;
+
 import javax.swing.*;
 
 import controller.ControllerGUI;
@@ -22,13 +23,15 @@ public class MazeView extends JFrame implements IView {
   private JButton west;
   private boolean actionFlag = false;
   private JLabel shootText;
-
+  private JLabel statusBar;
+  private JPanel statusPanel;
 
   public MazeView(int rows, int columns, ControllerGUI controller) {
     this.setTitle("Maze");
     getContentPane().setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
     this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     this.setSize(500, 500);
+
 
     // Pane for Maze
     panel = new JPanel();
@@ -42,14 +45,18 @@ public class MazeView extends JFrame implements IView {
         grid[i][j].setVisible(false);
       }
     }
-
     JScrollPane scroll = new JScrollPane(panel);
 
     getContentPane().add(scroll);
-    panel.setBackground(Color.WHITE);
+    panel.setBackground(Color.BLACK);
 
+    statusPanel = new JPanel();
     panelButton = new JPanel();
     panelButton.setSize(500, 200);
+
+    statusBar = new JLabel();
+    statusPanel.add(statusBar);
+
     move = new JButton("Move");
     move.setActionCommand("Move");
     move.setSize(100, 100);
@@ -58,9 +65,13 @@ public class MazeView extends JFrame implements IView {
     shoot.setActionCommand("Shoot");
     shoot.setSize(100, 100);
 
+//    statusBar.setLocation(100,100);
+
+    panelButton.add(statusBar);
     panelButton.add(move);
     panelButton.add(shoot);
     getContentPane().add(panelButton);
+    getContentPane().add(statusPanel);
 
     panelShoot = new JPanel();
     panelMove = new JPanel();
@@ -71,8 +82,6 @@ public class MazeView extends JFrame implements IView {
     panelMove.setVisible(false);
     panelShoot.setVisible(false);
     this.setResizable(true);
-//    System.out.println(Arrays.toString(this.getContentPane().getComponents()));
-//    this.getContentPane().getComponent(1);
     this.setVisible(true);
   }
 
@@ -101,6 +110,10 @@ public class MazeView extends JFrame implements IView {
     panelMove.add(east);
     panelMove.add(west);
     getContentPane().add(panelMove);
+  }
+
+  public void setStatus(String text) {
+    statusBar.setText(text);
   }
 
 
@@ -177,6 +190,9 @@ public class MazeView extends JFrame implements IView {
     });
   }
 
+
+
+
   @Override
   public void popUpBox(String message) {
     JOptionPane.showMessageDialog(this, message);
@@ -189,6 +205,12 @@ public class MazeView extends JFrame implements IView {
             JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE,
             null, options, options[0]);
     return action;
+  }
+
+  @Override
+  public void resetFocus() {
+    this.setFocusable(true);
+    this.requestFocus();
   }
 
 
@@ -220,4 +242,6 @@ public class MazeView extends JFrame implements IView {
     panelShoot.setVisible(true);
     panelMove.setVisible(true);
   }
+
+
 }

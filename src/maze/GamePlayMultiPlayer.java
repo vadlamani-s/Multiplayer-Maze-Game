@@ -32,27 +32,26 @@ public class GamePlayMultiPlayer extends GamePlayExtended implements IGamePlayMu
       int[] location = maze.getNumberToCoordinate().get(randomPositions.get(0));
       this.player = playerList.get(i);
       this.updatePlayerPosition(location[0], location[1]);
+      this.player.getMoveMemory().add(randomPositions.get(0));
       randomPositions.remove(0);
     }
+    changePlayer(0);
   }
 
   @Override
-  public void changePlayer() {
-    this.player = playerList.get(0);
-    playerList.add(playerList.remove(0));
+  public void changePlayer(int playerNumber) {
+    this.player = playerList.get(playerNumber);
   }
 
   @Override
   public Messages makeMove(Directions move) {
     Messages message = super.makeMove(move);
-    changePlayer();
     return message;
   }
 
   @Override
   public Messages arrowMakeMove(Directions move, int noOfMoves) {
     Messages message = super.arrowMakeMove(move, noOfMoves);
-    changePlayer();
     return message;
   }
 

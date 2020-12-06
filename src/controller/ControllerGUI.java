@@ -1,11 +1,16 @@
 package controller;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.security.Key;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
@@ -37,7 +42,10 @@ public class ControllerGUI implements Features {
   private int batPercentage;
   private int pitPercentage;
   private boolean wrapping;
-  
+  private Map<Integer, String> playerIndexMap;
+  private List<Integer> playerIndices;
+  private Set<Integer> memory;
+
   private final String path = "C:/Users/Satyanarayana/Documents/CS5010/projects/HW6/"
           + "hunt-the-wumpus-images/hunt-the-wumpus-images/";
   private Map<Set<String>, String> textImageMap;
@@ -51,6 +59,10 @@ public class ControllerGUI implements Features {
     this.model = null;
     textImageMap = new HashMap<>();
     populateMap(textImageMap);
+    playerIndexMap = new HashMap<>();
+    playerIndices = new ArrayList<>();
+    memory = new HashSet<>();
+
   }
 
 
@@ -148,6 +160,7 @@ public class ControllerGUI implements Features {
   public void setView(IView v) {
     view = v;
     view.setFeatures(this);
+    setKeyBoard();
   }
 
   // Convert String to integer
@@ -158,35 +171,95 @@ public class ControllerGUI implements Features {
   private void messageCheck(Messages message) {
     int action;
     if (message == Messages.BAT) {
-      throw new IllegalArgumentException(Messages.getMessages(Messages.BAT));
+      throw new IllegalArgumentException(playerIndexMap.get(playerIndices.get(0)) + " " +
+              Messages.getMessages(Messages.BAT));
     }
+
     if (message == Messages.PIT) {
-      action = view.gameEndPopUp(Messages.getMessages(Messages.PIT));
-      endPopUpImpl(action);
+      int playerNum = playerIndices.remove(0);
+      if (playerIndices.size() >= 1) {
+        throw new IllegalArgumentException(playerIndexMap.get(playerNum) + " " +
+                Messages.getMessages(Messages.PIT));
+      } else {
+        action = view.gameEndPopUp(playerIndexMap.get(playerNum) + " " +
+                Messages.getMessages(Messages.PIT));
+        endPopUpImpl(action);
+      }
     }
+
     if (message == Messages.ARROWMISS) {
-      throw new IllegalArgumentException(Messages.getMessages(Messages.ARROWMISS));
+      throw new IllegalArgumentException(playerIndexMap.get(playerIndices.get(0)) + " " +
+              Messages.getMessages(Messages.ARROWMISS));
     }
+
     if (message == Messages.WAMPUSMISS) {
-      throw new IllegalArgumentException(Messages.getMessages(Messages.WAMPUSMISS));
+      throw new IllegalArgumentException(playerIndexMap.get(playerIndices.get(0)) + " " +
+              Messages.getMessages(Messages.WAMPUSMISS));
     }
     if (message == Messages.NOTBAT) {
-      throw new IllegalArgumentException(Messages.getMessages(Messages.NOTBAT));
+      throw new IllegalArgumentException(playerIndexMap.get(playerIndices.get(0)) + " " +
+              Messages.getMessages(Messages.NOTBAT));
     }
     if (message == Messages.NOARROWS) {
-      action = view.gameEndPopUp(Messages.getMessages(Messages.NOARROWS));
-      endPopUpImpl(action);
+      int playerNum = playerIndices.remove(0);
+      if (playerIndices.size() >= 1) {
+        throw new IllegalArgumentException(playerIndexMap.get(playerNum) + " " +
+                Messages.getMessages(Messages.NOARROWS));
+      } else {
+        action = view.gameEndPopUp(playerIndexMap.get(playerNum) + " " +
+                Messages.getMessages(Messages.NOARROWS));
+        endPopUpImpl(action);
+      }
     }
     if (message == Messages.GAMEOVER) {
-      action = view.gameEndPopUp(Messages.getMessages(Messages.GAMEOVER));
-      endPopUpImpl(action);
+      int playerNum = playerIndices.remove(0);
+      if (playerIndices.size() >= 1) {
+        throw new IllegalArgumentException(playerIndexMap.get(playerNum) + " " +
+                Messages.getMessages(Messages.GAMEOVER));
+      } else {
+        action = view.gameEndPopUp(playerIndexMap.get(playerNum) + " " +
+                Messages.getMessages(Messages.GAMEOVER));
+        endPopUpImpl(action);
+      }
     }
+    if (message == Messages.BATPIT) {
+      int playerNum = playerIndices.remove(0);
+      if (playerIndices.size() >= 1) {
+        throw new IllegalArgumentException(playerIndexMap.get(playerNum) + " " +
+                Messages.getMessages(Messages.BATPIT));
+      } else {
+        action = view.gameEndPopUp(playerIndexMap.get(playerNum) + " " +
+                Messages.getMessages(Messages.BATPIT));
+        endPopUpImpl(action);
+      }
+    }
+
+    if (message == Messages.BATWAMPUS) {
+      int playerNum = playerIndices.remove(0);
+      if (playerIndices.size() >= 1) {
+        throw new IllegalArgumentException(playerIndexMap.get(playerNum) + " " +
+                Messages.getMessages(Messages.BATWAMPUS));
+      } else {
+        action = view.gameEndPopUp(playerIndexMap.get(playerNum) + " " +
+                Messages.getMessages(Messages.BATWAMPUS));
+        endPopUpImpl(action);
+      }
+    }
+
     if (message == Messages.WAMPUS) {
-      action = view.gameEndPopUp(Messages.getMessages(Messages.WAMPUS));
-      endPopUpImpl(action);
+      int playerNum = playerIndices.remove(0);
+      if (playerIndices.size() >= 1) {
+        throw new IllegalArgumentException(playerIndexMap.get(playerNum) + " " +
+                Messages.getMessages(Messages.WAMPUS));
+      } else {
+        action = view.gameEndPopUp(playerIndexMap.get(playerNum) + " " +
+                Messages.getMessages(Messages.WAMPUS));
+        endPopUpImpl(action);
+      }
     }
     if (message == Messages.WIN) {
-      action = view.gameEndPopUp(Messages.getMessages(Messages.WIN));
+      int playerNum = playerIndices.remove(0);
+      action = view.gameEndPopUp(playerIndexMap.get(playerNum) + " won the game");
       endPopUpImpl(action);
     }
   }
@@ -199,11 +272,14 @@ public class ControllerGUI implements Features {
           break;
         case 1:
           AbstractIMaze.setRandom(seed);
+          memory.clear();
+          updatePlayerIndices();
           setModel();
           break;
         case 2:
           view.disableVisibility();
 //          ControllerGUI controllerNew = new ControllerGUI();
+          memory.clear();
           view = new FormView("Welcome to the Game", this);
           this.setView(view);
           break;
@@ -215,6 +291,13 @@ public class ControllerGUI implements Features {
     }
   }
 
+  private int shufflePlayer() {
+    view.setStatus(String.format("Its %s turn", playerIndexMap.get(playerIndices.get(0))));
+    int temp = playerIndices.remove(0);
+    playerIndices.add(temp);
+    return playerIndices.get(0);
+  }
+
 
   // actionFlag -> false for move; actionFlag -> true for shoot
   @Override
@@ -224,12 +307,14 @@ public class ControllerGUI implements Features {
       int number = shootMoves.equals("") ? 0 : getShootMoves(shootMoves);
       if (actionFlag) {
         messages = model.arrowMakeMove(Directions.NORTH, number);
-        model.changePlayer();
+        model.changePlayer(shufflePlayer());
       } else {
         messages = model.makeMove(Directions.NORTH);
         playGame();
       }
+      view.resetFocus();
       messageCheck(messages);
+
     } catch (Exception e) {
       view.popUpBox(e.getMessage());
     }
@@ -243,12 +328,14 @@ public class ControllerGUI implements Features {
       int number = shootMoves.equals("") ? 0 : getShootMoves(shootMoves);
       if (actionFlag) {
         messages = model.arrowMakeMove(Directions.SOUTH, number);
-        model.changePlayer();
+        model.changePlayer(shufflePlayer());
       } else {
         messages = model.makeMove(Directions.SOUTH);
         playGame();
       }
+      view.resetFocus();
       messageCheck(messages);
+
     } catch (Exception e) {
       view.popUpBox(e.getMessage());
     }
@@ -262,11 +349,12 @@ public class ControllerGUI implements Features {
       int number = shootMoves.equals("") ? 0 : getShootMoves(shootMoves);
       if (actionFlag) {
         messages = model.arrowMakeMove(Directions.EAST, number);
-        model.changePlayer();
+        model.changePlayer(shufflePlayer());
       } else {
         messages = model.makeMove(Directions.EAST);
         playGame();
       }
+      view.resetFocus();
       messageCheck(messages);
     } catch (Exception e) {
       view.popUpBox(e.getMessage());
@@ -282,11 +370,12 @@ public class ControllerGUI implements Features {
       int number = shootMoves.equals("") ? 0 : getShootMoves(shootMoves);
       if (actionFlag) {
         messages = model.arrowMakeMove(Directions.WEST, number);
-        model.changePlayer();
+        model.changePlayer(shufflePlayer());
       } else {
         messages = model.makeMove(Directions.WEST);
         playGame();
       }
+      view.resetFocus();
       messageCheck(messages);
     } catch (Exception e) {
       view.popUpBox(e.getMessage());
@@ -297,11 +386,13 @@ public class ControllerGUI implements Features {
   @Override
   public void shootVisibility() {
     view.shootVisibility();
+    view.resetFocus();
   }
 
   @Override
   public void moveVisibility() {
     view.moveVisibility();
+    view.resetFocus();
   }
 
 
@@ -311,9 +402,21 @@ public class ControllerGUI implements Features {
     view.remainingWallsFieldState(!mazeType.equals("perfect") && !mazeType.equals(" "));
   }
 
+  //Players are updated to the Map having playerName and index
   @Override
-  public void playerInGame(String playerInGame) {
-    this.playerOption = Integer.parseInt(String.valueOf(playerInGame.charAt(0)));
+  public void playerInGame(String playersInGame) {
+    this.playerOption = Integer.parseInt(String.valueOf(playersInGame.charAt(0)));
+    updatePlayerIndices();
+  }
+
+  private void updatePlayerIndices() {
+    String s = "player";
+    playerIndexMap = new HashMap<>();
+    playerIndices = new ArrayList<>();
+    for (int i = 0; i < playerOption; i++) {
+      playerIndexMap.put(i, s + " " + (i + 1));
+      playerIndices.add(i);
+    }
   }
 
   @Override
@@ -357,6 +460,7 @@ public class ControllerGUI implements Features {
     }
     view.disableVisibility();
     view = new MazeView(rows, columns, this);
+    view.resetFocus();
     setView(view);
     playGame();
   }
@@ -364,14 +468,13 @@ public class ControllerGUI implements Features {
   // Change the state of the game/maze
   private void playGame() throws IOException {
     updateImage();
-    initialisePlayers();
     initialiseWampus();
     initialiseHint();
+    initialisePlayers();
     playerPreviousState();
   }
 
   private void playerPreviousState() {
-    Set<Integer> memory = model.getMoveMemory();
     for (Integer integer : memory) {
       int[] location = getNumberToCoordinate(integer);
       view.setVisibility(location[0], location[1]);
@@ -412,12 +515,12 @@ public class ControllerGUI implements Features {
 
   // Initialise Players on the maze initially
   private void initialisePlayers() throws IOException {
-    int count = playerOption;
-    while (count != 0) {
+    for (int i = 0; i < playerIndices.size(); i++) {
       updatePlayerImage();
-      model.changePlayer();
-      count--;
+      memory.addAll(model.getMoveMemory());
+      model.changePlayer(shufflePlayer());
     }
+    model.changePlayer(shufflePlayer());
   }
 
   // To Overlay Images
@@ -489,9 +592,61 @@ public class ControllerGUI implements Features {
   }
 
 
+  private void setKeyBoard() {
+    Map<Character, Runnable> keyTypes = new HashMap<>();
+    Map<Integer, Runnable> keyPresses = new HashMap<>();
+    Map<Integer, Runnable> keyReleases = new HashMap<>();
+
+    keyPresses.put(KeyEvent.VK_UP, () -> { // the contents of MakeCaps below
+              this.moveNorth(false, "0");
+            }
+    );
+
+    keyPresses.put(KeyEvent.VK_DOWN, () -> { // the contents of MakeCaps below
+              this.moveSouth(false, "0");
+            }
+    );
+
+    keyPresses.put(KeyEvent.VK_LEFT, () -> { // the contents of MakeCaps below
+              this.moveWest(false, "0");
+            }
+    );
+
+    keyPresses.put(KeyEvent.VK_RIGHT, () -> { // the contents of MakeCaps below
+              this.moveEast(false, "0");
+            }
+    );
+
+    keyPresses.put(KeyEvent.VK_C, () -> {
+              this.bounty();
+            }
+    );
+
+    keyReleases.put(KeyEvent.VK_C, () -> { // the contents of MakeOriginal below
+            }
+    );
+    KeyboardListener kbd = new KeyboardListener();
+    kbd.setKeyTypedMap(keyTypes);
+    kbd.setKeyPressedMap(keyPresses);
+    kbd.setKeyReleasedMap(keyReleases);
+
+    view.addKeyListener(kbd);
+  }
+
+
+  private void bounty() {
+    for (int i = 0; i < rows; i++) {
+      for (int j = 0; j < columns; j++) {
+        view.setVisibility(i, j);
+      }
+    }
+  }
+
+
   @Override
   public void exit() {
     System.exit(0);
   }
+
 
 }

@@ -1,5 +1,7 @@
 package view;
 
+import java.awt.event.KeyListener;
+
 import javax.swing.*;
 
 import controller.Features;
@@ -27,5 +29,11 @@ public interface IView {
   void disableVisibility(int row, int column);
 
   int gameEndPopUp(String message);
+
+  void resetFocus();
+
+  void addKeyListener(KeyListener listener);
+
+  void setStatus(String text);
 
 }

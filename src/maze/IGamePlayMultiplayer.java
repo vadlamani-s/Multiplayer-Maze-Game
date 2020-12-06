@@ -12,8 +12,10 @@ public interface IGamePlayMultiplayer extends IGamePlayExtended {
 
   /**
    * Change player.
+   *
+   * @param playerNumber the player number
    */
-  void changePlayer();
+  void changePlayer(int playerNumber);
 
   /**
    * Gets maze path list.

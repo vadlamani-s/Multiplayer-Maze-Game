@@ -52,6 +52,13 @@ public enum Messages {
   ARROWSUCCESSFUL("Arrow shot successfully"),
 
   /**
+   * The BatPit message.
+   */
+  BATPIT("Bat picked you up and dropped you on the pit"),
+
+  BATWAMPUS("Bat picked you up and dropped you on the Wampus :("),
+
+  /**
    * Default message.
    */
   DEFAULT("Testing");

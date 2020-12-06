@@ -220,8 +220,12 @@ public class GamePlayExtended extends GamePlay implements IGamePlayExtended {
       batMove();
       Node currentNode = this.iMaze.getNode(this.player.getPositionNumber());
       if (currentNode.getFeatureList().contains(Features.PIT)) {
-        return Messages.PIT;
+        return Messages.BATPIT;
       }
+      if (currentNode.getFeatureList().contains(Features.WAMPUS)) {
+        return Messages.BATWAMPUS;
+      }
+
     } else {
       return Messages.NOTBAT;
     }
@@ -237,6 +241,7 @@ public class GamePlayExtended extends GamePlay implements IGamePlayExtended {
               * this.iMaze.getRows());
       int[] locationCoord = this.iMaze.getNumberToCoordinate().get(location);
       player.setPosition(new Position(locationCoord[0], locationCoord[1]));
+      player.getMoveMemory().add(player.getPositionNumber());
       batPick = AbstractIMaze.random.nextBoolean();
     }
   }
