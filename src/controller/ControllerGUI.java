@@ -37,6 +37,7 @@ public class ControllerGUI implements Features {
   private int batPercentage;
   private int pitPercentage;
   private boolean wrapping;
+  
   private final String path = "C:/Users/Satyanarayana/Documents/CS5010/projects/HW6/"
           + "hunt-the-wumpus-images/hunt-the-wumpus-images/";
   private Map<Set<String>, String> textImageMap;
