@@ -41,6 +41,7 @@ public class GamePlayMultiPlayer extends GamePlayExtended implements IGamePlayMu
   @Override
   public void changePlayer(int playerNumber) {
     this.player = playerList.get(playerNumber);
+//    System.out.println("current" + player);
   }
 
   @Override

@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import java.security.Key;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -28,7 +29,7 @@ import maze.NonPerfectMaze;
 import maze.PerfectMaze;
 import view.FormView;
 import view.IView;
-import view.MazeView;
+import view.MazeViewNew;
 
 public class ControllerGUI implements Features {
 
@@ -42,8 +43,7 @@ public class ControllerGUI implements Features {
   private int batPercentage;
   private int pitPercentage;
   private boolean wrapping;
-  private Map<Integer, String> playerIndexMap;
-  private List<Integer> playerIndices;
+  private List<String> playerIndices;
   private Set<Integer> memory;
 
   private final String path = "C:/Users/Satyanarayana/Documents/CS5010/projects/HW6/"
@@ -61,7 +61,6 @@ public class ControllerGUI implements Features {
     this.model = null;
     textImageMap = new HashMap<>();
     populateMap(textImageMap);
-    playerIndexMap = new HashMap<>();
     playerIndices = new ArrayList<>();
     memory = new HashSet<>();
     stringDirectionsMap = new HashMap<>();
@@ -135,8 +134,11 @@ public class ControllerGUI implements Features {
       add("pit");
     }}, "pit.png");
     textImageMap.put(new HashSet<>() {{
-      add("player");
-    }}, "player.png");
+      add("player1");
+    }}, "player1.png");
+    textImageMap.put(new HashSet<>() {{
+      add("player2");
+    }}, "player2.png");
     textImageMap.put(new HashSet<>() {{
       add("south");
     }}, "S.png");
@@ -181,96 +183,98 @@ public class ControllerGUI implements Features {
 
   private void messageCheck(Messages message) {
     int action;
+    int index = playerIndices.size() - 1;
     if (message == Messages.BAT) {
-      throw new IllegalArgumentException(playerIndexMap.get(playerIndices.get(0)) + " " +
+      throw new IllegalArgumentException(playerIndices.get(index).split(",")[1] + " | " +
               Messages.getMessages(Messages.BAT));
     }
 
     if (message == Messages.PIT) {
-      int playerNum = playerIndices.remove(0);
+
+      String playerNum = playerIndices.remove(index);
       if (playerIndices.size() >= 1) {
-        throw new IllegalArgumentException(playerIndexMap.get(playerNum) + " " +
+        throw new IllegalArgumentException(playerNum.split(",")[1] + " " +
                 Messages.getMessages(Messages.PIT));
       } else {
-        action = view.gameEndPopUp(playerIndexMap.get(playerNum) + " " +
+        action = view.gameEndPopUp(playerNum.split(",")[1] + " " +
                 Messages.getMessages(Messages.PIT));
         endPopUpImpl(action);
       }
     }
 
     if (message == Messages.ARROWMISS) {
-      throw new IllegalArgumentException(playerIndexMap.get(playerIndices.get(0)) + " " +
+      throw new IllegalArgumentException(playerIndices.get(index).split(",")[1] + " " +
               Messages.getMessages(Messages.ARROWMISS));
     }
 
     if (message == Messages.WAMPUSMISS) {
-      throw new IllegalArgumentException(playerIndexMap.get(playerIndices.get(0)) + " " +
+      throw new IllegalArgumentException(playerIndices.get(index).split(",")[1] + " " +
               Messages.getMessages(Messages.WAMPUSMISS));
     }
     if (message == Messages.NOTBAT) {
-      throw new IllegalArgumentException(playerIndexMap.get(playerIndices.get(0)) + " " +
+      throw new IllegalArgumentException(playerIndices.get(index).split(",")[1] + " " +
               Messages.getMessages(Messages.NOTBAT));
     }
     if (message == Messages.NOARROWS) {
-      int playerNum = playerIndices.remove(0);
+      String playerNum = playerIndices.remove(index);
       if (playerIndices.size() >= 1) {
-        throw new IllegalArgumentException(playerIndexMap.get(playerNum) + " " +
+        throw new IllegalArgumentException(playerNum.split(",")[1] + " " +
                 Messages.getMessages(Messages.NOARROWS));
       } else {
-        action = view.gameEndPopUp(playerIndexMap.get(playerNum) + " " +
+        action = view.gameEndPopUp(playerNum.split(",")[1] + " " +
                 Messages.getMessages(Messages.NOARROWS));
         endPopUpImpl(action);
       }
     }
     if (message == Messages.GAMEOVER) {
-      int playerNum = playerIndices.remove(0);
+      String playerNum = playerIndices.remove(index);
       if (playerIndices.size() >= 1) {
-        throw new IllegalArgumentException(playerIndexMap.get(playerNum) + " " +
+        throw new IllegalArgumentException(playerNum.split(",")[1] + " " +
                 Messages.getMessages(Messages.GAMEOVER));
       } else {
-        action = view.gameEndPopUp(playerIndexMap.get(playerNum) + " " +
+        action = view.gameEndPopUp(playerNum.split(",")[1] + " " +
                 Messages.getMessages(Messages.GAMEOVER));
         endPopUpImpl(action);
       }
     }
     if (message == Messages.BATPIT) {
-      int playerNum = playerIndices.remove(0);
+      String playerNum = playerIndices.remove(index);
       if (playerIndices.size() >= 1) {
-        throw new IllegalArgumentException(playerIndexMap.get(playerNum) + " " +
+        throw new IllegalArgumentException(playerNum.split(",")[1] + " " +
                 Messages.getMessages(Messages.BATPIT));
       } else {
-        action = view.gameEndPopUp(playerIndexMap.get(playerNum) + " " +
+        action = view.gameEndPopUp(playerNum.split(",")[1] + " " +
                 Messages.getMessages(Messages.BATPIT));
         endPopUpImpl(action);
       }
     }
 
     if (message == Messages.BATWAMPUS) {
-      int playerNum = playerIndices.remove(0);
+      String playerNum = playerIndices.remove(index);
       if (playerIndices.size() >= 1) {
-        throw new IllegalArgumentException(playerIndexMap.get(playerNum) + " " +
+        throw new IllegalArgumentException(playerNum.split(",")[1] + " " +
                 Messages.getMessages(Messages.BATWAMPUS));
       } else {
-        action = view.gameEndPopUp(playerIndexMap.get(playerNum) + " " +
+        action = view.gameEndPopUp(playerNum.split(",")[1] + " " +
                 Messages.getMessages(Messages.BATWAMPUS));
         endPopUpImpl(action);
       }
     }
 
     if (message == Messages.WAMPUS) {
-      int playerNum = playerIndices.remove(0);
+      String playerNum = playerIndices.remove(index);
       if (playerIndices.size() >= 1) {
-        throw new IllegalArgumentException(playerIndexMap.get(playerNum) + " " +
+        throw new IllegalArgumentException(playerNum.split(",")[1] + " " +
                 Messages.getMessages(Messages.WAMPUS));
       } else {
-        action = view.gameEndPopUp(playerIndexMap.get(playerNum) + " " +
+        action = view.gameEndPopUp(playerNum.split(",")[1] + " " +
                 Messages.getMessages(Messages.WAMPUS));
         endPopUpImpl(action);
       }
     }
     if (message == Messages.WIN) {
-      int playerNum = playerIndices.remove(0);
-      action = view.gameEndPopUp(playerIndexMap.get(playerNum) + " won the game");
+      String playerNum = playerIndices.remove(index);
+      action = view.gameEndPopUp(playerNum.split(",")[1] + " won the game");
       endPopUpImpl(action);
     }
   }
@@ -304,28 +308,27 @@ public class ControllerGUI implements Features {
   }
 
   private int shufflePlayer() {
-    view.setStatus(String.format("%s's turn", playerIndexMap.get(playerIndices.get(0))));
-    int temp = playerIndices.remove(0);
-    playerIndices.add(temp);
-    return playerIndices.get(0);
+    Collections.reverse(playerIndices);
+    return Integer.parseInt(playerIndices.get(0).split(",")[0]);
   }
 
 
   // actionFlag -> false for move; actionFlag -> true for shoot
   @Override
   public void move(String move, boolean actionFlag, String shootMoves) {
+    view.setStatus(String.format("%s's turn", playerIndices.get(0).split(",")[1]));
     Messages messages;
     Directions direction = stringDirectionsMap.get(move);
     try {
       int number = shootMoves.equals("") ? 0 : getShootMoves(shootMoves);
       if (actionFlag) {
         messages = model.arrowMakeMove(direction, number);
-        model.changePlayer(shufflePlayer());
+//        model.changePlayer(shufflePlayer());
       } else {
         messages = model.makeMove(direction);
-        playGame();
+        playGame(false);
+        model.changePlayer(shufflePlayer());
       }
-      view.resetFocus();
       messageCheck(messages);
     } catch (Exception e) {
       view.popUpBox(e.getMessage());
@@ -359,11 +362,9 @@ public class ControllerGUI implements Features {
 
   private void updatePlayerIndices() {
     String s = "player";
-    playerIndexMap = new HashMap<>();
     playerIndices = new ArrayList<>();
     for (int i = 0; i < playerOption; i++) {
-      playerIndexMap.put(i, s + " " + (i + 1));
-      playerIndices.add(i);
+      playerIndices.add(i + "," + s + (i + 1));
     }
   }
 
@@ -407,14 +408,15 @@ public class ControllerGUI implements Features {
       return;
     }
     view.disableVisibility();
-    view = new MazeView(rows, columns, this);
+    view = new MazeViewNew(rows, columns, this);
     view.resetFocus();
     setView(view);
-    playGame();
+    playGame(true);
   }
 
+
   // Change the state of the game/maze
-  private void playGame() throws IOException {
+  private void playGame(boolean initialFlag) throws IOException {
     updateImage();
     initialiseWampus();
     initialiseHint();
@@ -422,85 +424,6 @@ public class ControllerGUI implements Features {
     playerPreviousState();
   }
 
-  // Sets the visibility of the maze
-  private void playerPreviousState() {
-    for (Integer integer : memory) {
-      int[] location = getNumberToCoordinate(integer);
-      view.setVisibility(location[0], location[1]);
-    }
-  }
-
-
-  private void initialiseHint() throws IOException {
-    StringBuilder stringBuilder = model.hintImpl(model.getPlayerPosRow(),
-            model.getPlayerPosColumn());
-    String stenchPath = path + "stench.png";
-    String breezePath = path + "breeze.png";
-    if (stringBuilder.indexOf("Wampus near by\n") >= 0) {
-      ImageIcon imageIcon = (ImageIcon) view.getImage(model.getPlayerPosRow(),
-              model.getPlayerPosColumn());
-      BufferedImage image = (BufferedImage) imageIcon.getImage();
-      image = overlay(image, stenchPath, 10);
-      view.populateImage(model.getPlayerPosRow(), model.getPlayerPosColumn(), new ImageIcon(image));
-    }
-    if (stringBuilder.indexOf("Draft near by\n") >= 0) {
-      ImageIcon imageIcon = (ImageIcon) view.getImage(model.getPlayerPosRow(),
-              model.getPlayerPosColumn());
-      BufferedImage image = (BufferedImage) imageIcon.getImage();
-      image = overlay(image, breezePath, 10);
-      view.populateImage(model.getPlayerPosRow(), model.getPlayerPosColumn(), new ImageIcon(image));
-    }
-  }
-
-
-  private void initialiseWampus() throws IOException {
-    String wampusPath = path + "wumpus.png";
-    int[] location = this.getNumberToCoordinate(model.getWampusLocation());
-    ImageIcon imageIcon = (ImageIcon) view.getImage(location[0], location[1]);
-    BufferedImage image = (BufferedImage) imageIcon.getImage();
-    image = overlay(image, wampusPath, 10);
-    view.populateImage(location[0], location[1], new ImageIcon(image));
-  }
-
-  // Initialise Players on the maze initially
-  private void initialisePlayers() throws IOException {
-    for (int i = 0; i < playerIndices.size(); i++) {
-      updatePlayerImage();
-      memory.addAll(model.getMoveMemory());
-      model.changePlayer(shufflePlayer());
-    }
-    model.changePlayer(shufflePlayer());
-  }
-
-  // To Overlay Images
-  private BufferedImage overlay(BufferedImage starting, String fpath, int offset) throws
-          IOException {
-    BufferedImage overlay = ImageIO.read(new File(fpath));
-    int w = Math.max(starting.getWidth(), overlay.getWidth());
-    int h = Math.max(starting.getHeight(), overlay.getHeight());
-    BufferedImage combined = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-    Graphics g = combined.getGraphics();
-    g.drawImage(starting, 0, 0, null);
-    g.drawImage(overlay, offset, offset, null);
-    return combined;
-  }
-
-  // Reads and returns an image given the path
-  private BufferedImage getImage(String filePath) throws IOException {
-    BufferedImage picture = ImageIO.read(new File(filePath));
-    return picture;
-  }
-
-  // Updates the players position on the maze
-  private void updatePlayerImage() throws IOException {
-    String playerPath = path + "player.png";
-    ImageIcon imageIcon = (ImageIcon) view.getImage(model.getPlayerPosRow(),
-            model.getPlayerPosColumn());
-    BufferedImage image = (BufferedImage) imageIcon.getImage();
-    image = overlay(image, playerPath, 10);
-    view.populateImage(model.getPlayerPosRow(), model.getPlayerPosColumn(), new ImageIcon(image));
-    view.setVisibility(model.getPlayerPosRow(), model.getPlayerPosColumn());
-  }
 
   // Method for populating the view with images
   public void updateImage() throws IOException {
@@ -519,6 +442,95 @@ public class ControllerGUI implements Features {
         view.populateImage(i, j, new ImageIcon(image));
       }
     }
+  }
+
+  private void initialiseWampus() throws IOException {
+    String wampusPath = path + "wumpus.png";
+    int[] location = this.getNumberToCoordinate(model.getWampusLocation());
+    ImageIcon imageIcon = (ImageIcon) view.getImage(location[0], location[1]);
+    BufferedImage image = (BufferedImage) imageIcon.getImage();
+    image = overlay(image, wampusPath, 10);
+    view.populateImage(location[0], location[1], new ImageIcon(image));
+  }
+
+  private void initialiseHint() throws IOException {
+    int count = 0;
+    while (count < playerIndices.size()) {
+      StringBuilder stringBuilder = model.hintImpl(model.getPlayerPosRow(),
+              model.getPlayerPosColumn());
+      String stenchPath = path + "stench.png";
+      String breezePath = path + "breeze.png";
+      if (stringBuilder.indexOf("Wampus near by\n") >= 0) {
+        ImageIcon imageIcon = (ImageIcon) view.getImage(model.getPlayerPosRow(),
+                model.getPlayerPosColumn());
+        BufferedImage image = (BufferedImage) imageIcon.getImage();
+        image = overlay(image, stenchPath, 10);
+        view.populateImage(model.getPlayerPosRow(), model.getPlayerPosColumn(), new ImageIcon(image));
+      }
+      if (stringBuilder.indexOf("Draft near by\n") >= 0) {
+        ImageIcon imageIcon = (ImageIcon) view.getImage(model.getPlayerPosRow(),
+                model.getPlayerPosColumn());
+        BufferedImage image = (BufferedImage) imageIcon.getImage();
+        image = overlay(image, breezePath, 10);
+        view.populateImage(model.getPlayerPosRow(), model.getPlayerPosColumn(), new ImageIcon(image));
+      }
+      model.changePlayer(shufflePlayer());
+      count++;
+    }
+  }
+
+  // Initialise Players on the maze initially
+  private void initialisePlayers() throws IOException {
+    int count = 0;
+    while (count < playerIndices.size()) {
+//      model.changePlayer(count);
+      updatePlayerImage(playerIndices.get(0).split(",")[1]);
+      memory.addAll(model.getMoveMemory());
+      count++;
+      model.changePlayer(shufflePlayer());
+    }
+//    model.changePlayer(shufflePlayer());
+    view.setStatus(String.format("%s's turn", playerIndices.get(0).split(",")[1]));
+    System.out.println(playerIndices);
+  }
+
+  // Updates the players position on the maze
+  private void updatePlayerImage(String playerImage) throws IOException {
+    String playerPath = path + playerImage + ".png";
+    ImageIcon imageIcon = (ImageIcon) view.getImage(model.getPlayerPosRow(),
+            model.getPlayerPosColumn());
+    BufferedImage image = (BufferedImage) imageIcon.getImage();
+    image = overlay(image, playerPath, 10);
+    view.populateImage(model.getPlayerPosRow(), model.getPlayerPosColumn(), new ImageIcon(image));
+    view.setVisibility(model.getPlayerPosRow(), model.getPlayerPosColumn());
+  }
+
+  // Sets the visibility of the maze
+  private void playerPreviousState() {
+    for (Integer integer : memory) {
+      int[] location = getNumberToCoordinate(integer);
+      view.setVisibility(location[0], location[1]);
+    }
+  }
+
+
+  // To Overlay Images
+  private BufferedImage overlay(BufferedImage starting, String fpath, int offset) throws
+          IOException {
+    BufferedImage overlay = ImageIO.read(new File(fpath));
+    int w = Math.max(starting.getWidth(), overlay.getWidth());
+    int h = Math.max(starting.getHeight(), overlay.getHeight());
+    BufferedImage combined = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+    Graphics g = combined.getGraphics();
+    g.drawImage(starting, 0, 0, null);
+    g.drawImage(overlay, offset, offset, null);
+    return combined;
+  }
+
+  // Reads and returns an image given the path
+  private BufferedImage getImage(String filePath) throws IOException {
+    BufferedImage picture = ImageIO.read(new File(filePath));
+    return picture;
   }
 
 
