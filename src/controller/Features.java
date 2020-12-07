@@ -14,13 +14,7 @@ public interface Features {
 
   void moveVisibility();
 
-  void moveNorth(boolean actionFlag, String shootMoves);
-
-  void moveSouth(boolean actionFlag, String shootMoves);
-
-  void moveEast(boolean actionFlag, String shootMoves);
-
-  void moveWest(boolean actionFlag, String shootMoves);
+  void move(String move, boolean actionFlag, String shootMoves);
 
   void exit();
 

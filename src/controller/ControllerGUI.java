@@ -51,6 +51,8 @@ public class ControllerGUI implements Features {
   private Map<Set<String>, String> textImageMap;
   private int seed;
 
+  private final Map<String, Directions> stringDirectionsMap;
+
 
   public ControllerGUI() {
     Random random = new Random();
@@ -62,6 +64,15 @@ public class ControllerGUI implements Features {
     playerIndexMap = new HashMap<>();
     playerIndices = new ArrayList<>();
     memory = new HashSet<>();
+    stringDirectionsMap = new HashMap<>();
+    loadStringDirection();
+  }
+
+  private void loadStringDirection() {
+    stringDirectionsMap.put("north", Directions.NORTH);
+    stringDirectionsMap.put("south", Directions.SOUTH);
+    stringDirectionsMap.put("east", Directions.EAST);
+    stringDirectionsMap.put("west", Directions.WEST);
 
   }
 
@@ -267,6 +278,7 @@ public class ControllerGUI implements Features {
   private void endPopUpImpl(int choice) {
     try {
       switch (choice) {
+        case -1:
         case 0:
           System.exit(0);
           break;
@@ -284,7 +296,7 @@ public class ControllerGUI implements Features {
           this.setView(view);
           break;
         default:
-          throw new IllegalArgumentException("Incorrect Choice");
+          view.gameEndPopUp("Choose one of the options");
       }
     } catch (Exception e) {
       view.popUpBox(e.getMessage());
@@ -292,7 +304,7 @@ public class ControllerGUI implements Features {
   }
 
   private int shufflePlayer() {
-    view.setStatus(String.format("Its %s turn", playerIndexMap.get(playerIndices.get(0))));
+    view.setStatus(String.format("%s's turn", playerIndexMap.get(playerIndices.get(0))));
     int temp = playerIndices.remove(0);
     playerIndices.add(temp);
     return playerIndices.get(0);
@@ -301,57 +313,16 @@ public class ControllerGUI implements Features {
 
   // actionFlag -> false for move; actionFlag -> true for shoot
   @Override
-  public void moveNorth(boolean actionFlag, String shootMoves) {
+  public void move(String move, boolean actionFlag, String shootMoves) {
     Messages messages;
+    Directions direction = stringDirectionsMap.get(move);
     try {
       int number = shootMoves.equals("") ? 0 : getShootMoves(shootMoves);
       if (actionFlag) {
-        messages = model.arrowMakeMove(Directions.NORTH, number);
+        messages = model.arrowMakeMove(direction, number);
         model.changePlayer(shufflePlayer());
       } else {
-        messages = model.makeMove(Directions.NORTH);
-        playGame();
-      }
-      view.resetFocus();
-      messageCheck(messages);
-
-    } catch (Exception e) {
-      view.popUpBox(e.getMessage());
-    }
-  }
-
-  // actionFlag -> false for move; actionFlag -> true for shoot
-  @Override
-  public void moveSouth(boolean actionFlag, String shootMoves) {
-    Messages messages;
-    try {
-      int number = shootMoves.equals("") ? 0 : getShootMoves(shootMoves);
-      if (actionFlag) {
-        messages = model.arrowMakeMove(Directions.SOUTH, number);
-        model.changePlayer(shufflePlayer());
-      } else {
-        messages = model.makeMove(Directions.SOUTH);
-        playGame();
-      }
-      view.resetFocus();
-      messageCheck(messages);
-
-    } catch (Exception e) {
-      view.popUpBox(e.getMessage());
-    }
-  }
-
-  // actionFlag -> false for move; actionFlag -> true for shoot
-  @Override
-  public void moveEast(boolean actionFlag, String shootMoves) {
-    Messages messages;
-    try {
-      int number = shootMoves.equals("") ? 0 : getShootMoves(shootMoves);
-      if (actionFlag) {
-        messages = model.arrowMakeMove(Directions.EAST, number);
-        model.changePlayer(shufflePlayer());
-      } else {
-        messages = model.makeMove(Directions.EAST);
+        messages = model.makeMove(direction);
         playGame();
       }
       view.resetFocus();
@@ -360,28 +331,6 @@ public class ControllerGUI implements Features {
       view.popUpBox(e.getMessage());
     }
   }
-
-
-  // actionFlag -> false for move; actionFlag -> true for shoot
-  @Override
-  public void moveWest(boolean actionFlag, String shootMoves) {
-    Messages messages;
-    try {
-      int number = shootMoves.equals("") ? 0 : getShootMoves(shootMoves);
-      if (actionFlag) {
-        messages = model.arrowMakeMove(Directions.WEST, number);
-        model.changePlayer(shufflePlayer());
-      } else {
-        messages = model.makeMove(Directions.WEST);
-        playGame();
-      }
-      view.resetFocus();
-      messageCheck(messages);
-    } catch (Exception e) {
-      view.popUpBox(e.getMessage());
-    }
-  }
-
 
   @Override
   public void shootVisibility() {
@@ -394,7 +343,6 @@ public class ControllerGUI implements Features {
     view.moveVisibility();
     view.resetFocus();
   }
-
 
   @Override
   public void processMazeType(String mazeType) {
@@ -474,6 +422,7 @@ public class ControllerGUI implements Features {
     playerPreviousState();
   }
 
+  // Sets the visibility of the maze
   private void playerPreviousState() {
     for (Integer integer : memory) {
       int[] location = getNumberToCoordinate(integer);
@@ -598,22 +547,22 @@ public class ControllerGUI implements Features {
     Map<Integer, Runnable> keyReleases = new HashMap<>();
 
     keyPresses.put(KeyEvent.VK_UP, () -> { // the contents of MakeCaps below
-              this.moveNorth(false, "0");
+              this.move("north", false, "0");
             }
     );
 
     keyPresses.put(KeyEvent.VK_DOWN, () -> { // the contents of MakeCaps below
-              this.moveSouth(false, "0");
+              this.move("south", false, "0");
             }
     );
 
     keyPresses.put(KeyEvent.VK_LEFT, () -> { // the contents of MakeCaps below
-              this.moveWest(false, "0");
+              this.move("west", false, "0");
             }
     );
 
     keyPresses.put(KeyEvent.VK_RIGHT, () -> { // the contents of MakeCaps below
-              this.moveEast(false, "0");
+              this.move("east", false, "0");
             }
     );
 

@@ -9,7 +9,7 @@ import controller.Features;
 
 public class MazeView extends JFrame implements IView {
 
-  private JPanel panel;
+  private JPanel panelMaze;
   private JPanel panelButton;
   private JPanel panelMove;
   private JPanel panelShoot;
@@ -24,7 +24,7 @@ public class MazeView extends JFrame implements IView {
   private boolean actionFlag = false;
   private JLabel shootText;
   private JLabel statusBar;
-  private JPanel statusPanel;
+  private JPanel panelStatus;
 
   public MazeView(int rows, int columns, ControllerGUI controller) {
     this.setTitle("Maze");
@@ -32,30 +32,39 @@ public class MazeView extends JFrame implements IView {
     this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     this.setSize(500, 500);
 
+    getContentPane().setMaximumSize(new Dimension(500, 500));
 
     // Pane for Maze
-    panel = new JPanel();
-    panel.setLayout(new GridLayout(rows, columns, 0, 0));
+    panelMaze = new JPanel();
+    panelStatus = new JPanel();
+    panelButton = new JPanel();
+    statusBar = new JLabel();
+
+    panelMaze.setMaximumSize(new Dimension(300, 300));
+    panelStatus.setMaximumSize(new Dimension(500, 50));
+    panelButton.setMaximumSize(new Dimension(500, 50));
+
+
+    panelMaze.setLayout(new GridLayout(rows, columns, -1, -1));
     grid = new JLabel[rows][columns];
 
     for (int i = 0; i < rows; i++) {
       for (int j = 0; j < columns; j++) {
         grid[i][j] = new JLabel();
-        panel.add(grid[i][j]);
+        panelMaze.add(grid[i][j]);
         grid[i][j].setVisible(false);
       }
     }
-    JScrollPane scroll = new JScrollPane(panel);
+
+    JScrollPane scroll = new JScrollPane(panelMaze);
 
     getContentPane().add(scroll);
-    panel.setBackground(Color.BLACK);
+    panelMaze.setBackground(Color.BLACK);
 
-    statusPanel = new JPanel();
-    panelButton = new JPanel();
     panelButton.setSize(500, 200);
 
-    statusBar = new JLabel();
-    statusPanel.add(statusBar);
+    panelStatus.add(statusBar);
+
 
     move = new JButton("Move");
     move.setActionCommand("Move");
@@ -65,16 +74,16 @@ public class MazeView extends JFrame implements IView {
     shoot.setActionCommand("Shoot");
     shoot.setSize(100, 100);
 
-//    statusBar.setLocation(100,100);
 
-    panelButton.add(statusBar);
     panelButton.add(move);
     panelButton.add(shoot);
     getContentPane().add(panelButton);
-    getContentPane().add(statusPanel);
+    getContentPane().add(panelStatus);
 
     panelShoot = new JPanel();
     panelMove = new JPanel();
+    panelButton.setMaximumSize(new Dimension(500, 50));
+    panelButton.setMaximumSize(new Dimension(500, 50));
 
     shootButtons();
     moveButtons();
@@ -166,31 +175,30 @@ public class MazeView extends JFrame implements IView {
     });
 
     north.addActionListener(l -> {
-      features.moveNorth(actionFlag, shootField.getText());
+      features.move(north.getText().toLowerCase(), actionFlag, shootField.getText());
       shootField.setText("");
       moveShootVisibility();
     });
 
     south.addActionListener(l -> {
-      features.moveSouth(actionFlag, shootField.getText());
+      features.move(south.getText().toLowerCase(), actionFlag, shootField.getText());
       shootField.setText("");
       moveShootVisibility();
     });
 
     east.addActionListener(l -> {
-      features.moveEast(actionFlag, shootField.getText());
+      features.move(east.getText().toLowerCase(), actionFlag, shootField.getText());
       shootField.setText("");
       moveShootVisibility();
     });
 
     west.addActionListener(l -> {
-      features.moveWest(actionFlag, shootField.getText());
+      features.move(west.getText().toLowerCase(), actionFlag, shootField.getText());
       shootField.setText("");
       moveShootVisibility();
     });
+
   }
-
-
 
 
   @Override
