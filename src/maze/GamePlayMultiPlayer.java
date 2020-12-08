@@ -4,9 +4,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
+/**
+ * The type Game play multi player.
+ */
 public class GamePlayMultiPlayer extends GamePlayExtended implements IGamePlayMultiplayer {
 
   private final List<Player> playerList;
@@ -15,7 +16,8 @@ public class GamePlayMultiPlayer extends GamePlayExtended implements IGamePlayMu
    * The game play constructor instantiates the maze as well as the player. The player is placed on
    * the maze and the maze is created.
    *
-   * @param maze the maze decided by the user
+   * @param maze        the maze decided by the user
+   * @param noOfPlayers the no of players
    */
   public GamePlayMultiPlayer(IMaze maze, int noOfPlayers) {
     super(maze);
@@ -41,7 +43,6 @@ public class GamePlayMultiPlayer extends GamePlayExtended implements IGamePlayMu
   @Override
   public void changePlayer(int playerNumber) {
     this.player = playerList.get(playerNumber);
-//    System.out.println("current" + player);
   }
 
   @Override
@@ -54,16 +55,6 @@ public class GamePlayMultiPlayer extends GamePlayExtended implements IGamePlayMu
   public Messages arrowMakeMove(Directions move, int noOfMoves) {
     Messages message = super.arrowMakeMove(move, noOfMoves);
     return message;
-  }
-
-  @Override
-  public Map<Integer, Set<Integer>> getMazePathList() {
-    return this.iMaze.getMazePathList();
-  }
-
-  @Override
-  public List<Integer> getHallWayPathList() {
-    return new ArrayList<>(this.iMaze.getHallWayPathList());
   }
 
   @Override

@@ -26,7 +26,7 @@ public class Driver {
     try {
       Scanner scanner = new Scanner(System.in);
       AbstractIMaze.setRandom(10);
-      IMaze iMaze = null;
+
       System.out.println("Please enter the number of rows in maze");
       int noOfRows = scanner.nextInt();
       System.out.println("Please enter the number of columns in maze");
@@ -35,7 +35,7 @@ public class Driver {
       int batPercentage = scanner.nextInt();
       System.out.println("Please enter the pit percentage");
       int pitPercentage = scanner.nextInt();
-
+      IMaze iMaze = null;
       while (iMaze == null) {
         System.out.println("Please enter the kind of maze perfect or imperfect maze");
         String typeMaze = scanner.next();

@@ -1,12 +1,11 @@
 package controller;
 
-import java.awt.*;
+import java.awt.Graphics;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.security.Key;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -17,7 +16,7 @@ import java.util.Random;
 import java.util.Set;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
+import javax.swing.ImageIcon;
 
 import maze.AbstractIMaze;
 import maze.Directions;
@@ -31,7 +30,10 @@ import view.FormView;
 import view.IView;
 import view.MazeViewNew;
 
-public class ControllerGUI implements Features {
+/**
+ * The type Controller gui.
+ */
+public class ControllerGui implements Features {
 
   private IView view;
   private IGamePlayMultiplayer model;
@@ -44,17 +46,24 @@ public class ControllerGUI implements Features {
   private int pitPercentage;
   private boolean wrapping;
   private List<String> playerIndices;
-  private Set<Integer> memory;
+  private final Set<Integer> memory;
 
-  private final String path = "C:/Users/Satyanarayana/Documents/CS5010/projects/HW6/"
+  private final String path = Paths.get("").toAbsolutePath().toString() + "\\" + "res\\"
           + "hunt-the-wumpus-images/hunt-the-wumpus-images/";
-  private Map<Set<String>, String> textImageMap;
-  private int seed;
+
+  
+//  private final String path = "C:/Users/Satyanarayana/Documents/CS5010/projects/HW6/"
+
+  private final Map<Set<String>, String> textImageMap;
+  private final int seed;
 
   private final Map<String, Directions> stringDirectionsMap;
 
 
-  public ControllerGUI() {
+  /**
+   * Instantiates a new Controller gui.
+   */
+  public ControllerGui() {
     Random random = new Random();
     seed = random.nextInt();
     AbstractIMaze.setRandom(seed);
@@ -77,99 +86,151 @@ public class ControllerGUI implements Features {
 
 
   private void populateMap(Map<Set<String>, String> textImageMap) {
-    textImageMap.put(new HashSet<>() {{
-      add("bat");
-    }}, "bats.png");
-    textImageMap.put(new HashSet<>() {{
-      add("black");
-    }}, "black.png");
-    textImageMap.put(new HashSet<>() {{
-      add("breeze");
-    }}, "breeze.png");
-    textImageMap.put(new HashSet<>() {{
-      add("east");
-    }}, "E.png");
-    textImageMap.put(new HashSet<>() {{
-      add("east");
-      add("west");
-    }}, "EW.png");
-    textImageMap.put(new HashSet<>() {{
-      add("north");
-    }}, "N.png");
-    textImageMap.put(new HashSet<>() {{
-      add("north");
-      add("east");
-    }}, "NE.png");
-    textImageMap.put(new HashSet<>() {{
-      add("north");
-      add("east");
-      add("west");
-    }}, "NEW.png");
-    textImageMap.put(new HashSet<>() {{
-      add("north");
-      add("south");
-    }}, "NS.png");
-    textImageMap.put(new HashSet<>() {{
-      add("north");
-      add("south");
-      add("east");
-    }}, "NSE.png");
-    textImageMap.put(new HashSet<>() {{
-                       add("north");
-                       add("south");
-                       add("east");
-                       add("west");
-                     }},
-            "NSEW.png");
-    textImageMap.put(new HashSet<>() {{
-      add("north");
-      add("south");
-      add("west");
-    }}, "NSW.png");
-    textImageMap.put(new HashSet<>() {{
-      add("north");
-      add("west");
-    }}, "NW.png");
-    textImageMap.put(new HashSet<>() {{
-      add("pit");
-    }}, "pit.png");
-    textImageMap.put(new HashSet<>() {{
-      add("player1");
-    }}, "player1.png");
-    textImageMap.put(new HashSet<>() {{
-      add("player2");
-    }}, "player2.png");
-    textImageMap.put(new HashSet<>() {{
-      add("south");
-    }}, "S.png");
-    textImageMap.put(new HashSet<>() {{
-      add("south");
-      add("east");
-    }}, "SE.png");
-    textImageMap.put(new HashSet<>() {{
-      add("west");
-      add("south");
-      add("east");
-    }}, "SEW.png");
-    textImageMap.put(new HashSet<>() {{
-      add("stench");
-    }}, "stench.png");
-    textImageMap.put(new HashSet<>() {{
-      add("south");
-      add("west");
-    }}, "SW.png");
-    textImageMap.put(new HashSet<>() {{
-      add("thief");
-    }}, "thief.png");
-    textImageMap.put(new HashSet<>() {{
-      add("west");
-    }}, "W.png");
-    textImageMap.put(new HashSet<>() {{
-      add("wumpus");
-    }}, "wumpus.png");
+    textImageMap.put(new HashSet<>() {
+      {
+        add("bat");
+      }
+    }, "bats.png");
+    textImageMap.put(new HashSet<>() {
+      {
+        add("black");
+      }
+    }, "black.png");
+    textImageMap.put(new HashSet<>() {
+      {
+        add("breeze");
+      }
+    }, "breeze.png");
+    textImageMap.put(new HashSet<>() {
+      {
+        add("east");
+      }
+    }, "E.png");
+    textImageMap.put(new HashSet<>() {
+      {
+        add("east");
+        add("west");
+      }
+    }, "EW.png");
+    textImageMap.put(new HashSet<>() {
+      {
+        add("north");
+      }
+    }, "N.png");
+    textImageMap.put(new HashSet<>() {
+      {
+        add("north");
+        add("east");
+      }
+    }, "NE.png");
+    textImageMap.put(new HashSet<>() {
+      {
+        add("north");
+        add("east");
+        add("west");
+      }
+    }, "NEW.png");
+    textImageMap.put(new HashSet<>() {
+      {
+        add("north");
+        add("south");
+      }
+    }, "NS.png");
+    textImageMap.put(new HashSet<>() {
+      {
+        add("north");
+        add("south");
+        add("east");
+      }
+    }, "NSE.png");
+    textImageMap.put(new HashSet<>() {
+      {
+        add("north");
+        add("south");
+        add("east");
+        add("west");
+      }
+    }, "NSEW.png");
+    textImageMap.put(new HashSet<>() {
+      {
+        add("north");
+        add("south");
+        add("west");
+      }
+    }, "NSW.png");
+    textImageMap.put(new HashSet<>() {
+      {
+        add("north");
+        add("west");
+      }
+    }, "NW.png");
+    textImageMap.put(new HashSet<>() {
+      {
+        add("pit");
+      }
+    }, "pit.png");
+    textImageMap.put(new HashSet<>() {
+      {
+        add("player1");
+      }
+    }, "player1.png");
+    textImageMap.put(new HashSet<>() {
+      {
+        add("player2");
+      }
+    }, "player2.png");
+    textImageMap.put(new HashSet<>() {
+      {
+        add("south");
+      }
+    }, "S.png");
+    textImageMap.put(new HashSet<>() {
+      {
+        add("south");
+        add("east");
+      }
+    }, "SE.png");
+    textImageMap.put(new HashSet<>() {
+      {
+        add("west");
+        add("south");
+        add("east");
+      }
+    }, "SEW.png");
+    textImageMap.put(new HashSet<>() {
+      {
+        add("stench");
+      }
+    }, "stench.png");
+    textImageMap.put(new HashSet<>() {
+      {
+        add("south");
+        add("west");
+      }
+    }, "SW.png");
+    textImageMap.put(new HashSet<>() {
+      {
+        add("thief");
+      }
+    }, "thief.png");
+    textImageMap.put(new HashSet<>() {
+      {
+        add("west");
+      }
+    }, "W.png");
+    textImageMap.put(new HashSet<>() {
+      {
+        add("wumpus");
+      }
+    }, "wumpus.png");
   }
 
 
+  /**
+   * Sets view.
+   *
+   * @param v the v
+   */
   public void setView(IView v) {
     view = v;
     view.setFeatures(this);
@@ -185,66 +246,66 @@ public class ControllerGUI implements Features {
     int action;
     int index = playerIndices.size() - 1;
     if (message == Messages.BAT) {
-      throw new IllegalArgumentException(playerIndices.get(index).split(",")[1] + " | " +
-              Messages.getMessages(Messages.BAT));
+      throw new IllegalArgumentException(playerIndices.get(index).split(",")[1] + " | "
+              + Messages.getMessages(Messages.BAT));
     }
 
     if (message == Messages.PIT) {
 
       String playerNum = playerIndices.remove(index);
       if (playerIndices.size() >= 1) {
-        throw new IllegalArgumentException(playerNum.split(",")[1] + " " +
-                Messages.getMessages(Messages.PIT));
+        throw new IllegalArgumentException(playerNum.split(",")[1] + " "
+                + Messages.getMessages(Messages.PIT));
       } else {
-        action = view.gameEndPopUp(playerNum.split(",")[1] + " " +
-                Messages.getMessages(Messages.PIT));
+        action = view.gameEndPopUp(playerNum.split(",")[1] + " "
+                + Messages.getMessages(Messages.PIT));
         endPopUpImpl(action);
       }
     }
 
     if (message == Messages.ARROWMISS) {
-      throw new IllegalArgumentException(playerIndices.get(index).split(",")[1] + " " +
-              Messages.getMessages(Messages.ARROWMISS));
+      throw new IllegalArgumentException(playerIndices.get(index).split(",")[1] + " "
+              + Messages.getMessages(Messages.ARROWMISS));
     }
 
     if (message == Messages.WAMPUSMISS) {
-      throw new IllegalArgumentException(playerIndices.get(index).split(",")[1] + " " +
-              Messages.getMessages(Messages.WAMPUSMISS));
+      throw new IllegalArgumentException(playerIndices.get(index).split(",")[1] + " "
+              + Messages.getMessages(Messages.WAMPUSMISS));
     }
     if (message == Messages.NOTBAT) {
-      throw new IllegalArgumentException(playerIndices.get(index).split(",")[1] + " " +
-              Messages.getMessages(Messages.NOTBAT));
+      throw new IllegalArgumentException(playerIndices.get(index).split(",")[1] + " "
+              + Messages.getMessages(Messages.NOTBAT));
     }
     if (message == Messages.NOARROWS) {
       String playerNum = playerIndices.remove(index);
       if (playerIndices.size() >= 1) {
-        throw new IllegalArgumentException(playerNum.split(",")[1] + " " +
-                Messages.getMessages(Messages.NOARROWS));
+        throw new IllegalArgumentException(playerNum.split(",")[1] + " "
+                + Messages.getMessages(Messages.NOARROWS));
       } else {
-        action = view.gameEndPopUp(playerNum.split(",")[1] + " " +
-                Messages.getMessages(Messages.NOARROWS));
+        action = view.gameEndPopUp(playerNum.split(",")[1] + " "
+                + Messages.getMessages(Messages.NOARROWS));
         endPopUpImpl(action);
       }
     }
     if (message == Messages.GAMEOVER) {
       String playerNum = playerIndices.remove(index);
       if (playerIndices.size() >= 1) {
-        throw new IllegalArgumentException(playerNum.split(",")[1] + " " +
-                Messages.getMessages(Messages.GAMEOVER));
+        throw new IllegalArgumentException(playerNum.split(",")[1] + " "
+                + Messages.getMessages(Messages.GAMEOVER));
       } else {
-        action = view.gameEndPopUp(playerNum.split(",")[1] + " " +
-                Messages.getMessages(Messages.GAMEOVER));
+        action = view.gameEndPopUp(playerNum.split(",")[1] + " "
+                + Messages.getMessages(Messages.GAMEOVER));
         endPopUpImpl(action);
       }
     }
     if (message == Messages.BATPIT) {
       String playerNum = playerIndices.remove(index);
       if (playerIndices.size() >= 1) {
-        throw new IllegalArgumentException(playerNum.split(",")[1] + " " +
-                Messages.getMessages(Messages.BATPIT));
+        throw new IllegalArgumentException(playerNum.split(",")[1] + " "
+                + Messages.getMessages(Messages.BATPIT));
       } else {
-        action = view.gameEndPopUp(playerNum.split(",")[1] + " " +
-                Messages.getMessages(Messages.BATPIT));
+        action = view.gameEndPopUp(playerNum.split(",")[1] + " "
+                + Messages.getMessages(Messages.BATPIT));
         endPopUpImpl(action);
       }
     }
@@ -252,11 +313,11 @@ public class ControllerGUI implements Features {
     if (message == Messages.BATWAMPUS) {
       String playerNum = playerIndices.remove(index);
       if (playerIndices.size() >= 1) {
-        throw new IllegalArgumentException(playerNum.split(",")[1] + " " +
-                Messages.getMessages(Messages.BATWAMPUS));
+        throw new IllegalArgumentException(playerNum.split(",")[1] + " "
+                + Messages.getMessages(Messages.BATWAMPUS));
       } else {
-        action = view.gameEndPopUp(playerNum.split(",")[1] + " " +
-                Messages.getMessages(Messages.BATWAMPUS));
+        action = view.gameEndPopUp(playerNum.split(",")[1] + " "
+                + Messages.getMessages(Messages.BATWAMPUS));
         endPopUpImpl(action);
       }
     }
@@ -264,11 +325,11 @@ public class ControllerGUI implements Features {
     if (message == Messages.WAMPUS) {
       String playerNum = playerIndices.remove(index);
       if (playerIndices.size() >= 1) {
-        throw new IllegalArgumentException(playerNum.split(",")[1] + " " +
-                Messages.getMessages(Messages.WAMPUS));
+        throw new IllegalArgumentException(playerNum.split(",")[1] + " "
+                + Messages.getMessages(Messages.WAMPUS));
       } else {
-        action = view.gameEndPopUp(playerNum.split(",")[1] + " " +
-                Messages.getMessages(Messages.WAMPUS));
+        action = view.gameEndPopUp(playerNum.split(",")[1] + " "
+                + Messages.getMessages(Messages.WAMPUS));
         endPopUpImpl(action);
       }
     }
@@ -294,7 +355,6 @@ public class ControllerGUI implements Features {
           break;
         case 2:
           view.disableVisibility();
-//          ControllerGUI controllerNew = new ControllerGUI();
           memory.clear();
           view = new FormView("Welcome to the Game", this);
           this.setView(view);
@@ -324,14 +384,16 @@ public class ControllerGUI implements Features {
         messages = model.arrowMakeMove(direction, number);
         model.changePlayer(shufflePlayer());
         view.setStatus(String.format("%s's turn | arrows left: %d",
-                playerIndices.get(0).split(",")[1], model.getArrows()));
+                playerIndices.get(0).split(",")[1], model.getArrows()), path
+                + playerIndices.get(0).split(",")[1] + ".png");
       } else {
         messages = model.makeMove(direction);
         playGame(false);
         // player's state changed
         model.changePlayer(shufflePlayer());
         view.setStatus(String.format("%s's turn | arrows left: %d",
-                playerIndices.get(0).split(",")[1], model.getArrows()));
+                playerIndices.get(0).split(",")[1], model.getArrows()), path
+                + playerIndices.get(0).split(",")[1] + ".png");
       }
       messageCheck(messages);
     } catch (Exception e) {
@@ -389,6 +451,8 @@ public class ControllerGUI implements Features {
       view.popUpBox(e.getMessage());
       return;
     }
+
+    view.popUpBox(this.toString());
     setModel();
   }
 
@@ -412,7 +476,7 @@ public class ControllerGUI implements Features {
       return;
     }
     view.disableVisibility();
-    view = new MazeViewNew(rows, columns, this, path);
+    view = new MazeViewNew(rows, columns, this);
     view.resetFocus();
     setView(view);
     playGame(true);
@@ -429,8 +493,14 @@ public class ControllerGUI implements Features {
   }
 
 
-  // Method for populating the view with images
+  /**
+   * Update image.
+   *
+   * @throws IOException the io exception
+   */
+
   public void updateImage() throws IOException {
+    // Method for populating the view with images
     for (int i = 0; i < rows; i++) {
       for (int j = 0; j < columns; j++) {
         int number = getCoordinateToNumber(i, j);
@@ -469,14 +539,16 @@ public class ControllerGUI implements Features {
                 model.getPlayerPosColumn());
         BufferedImage image = (BufferedImage) imageIcon.getImage();
         image = overlay(image, stenchPath, 10);
-        view.populateImage(model.getPlayerPosRow(), model.getPlayerPosColumn(), new ImageIcon(image));
+        view.populateImage(model.getPlayerPosRow(), model.getPlayerPosColumn(),
+                new ImageIcon(image));
       }
       if (stringBuilder.indexOf("Draft near by\n") >= 0) {
         ImageIcon imageIcon = (ImageIcon) view.getImage(model.getPlayerPosRow(),
                 model.getPlayerPosColumn());
         BufferedImage image = (BufferedImage) imageIcon.getImage();
         image = overlay(image, breezePath, 10);
-        view.populateImage(model.getPlayerPosRow(), model.getPlayerPosColumn(), new ImageIcon(image));
+        view.populateImage(model.getPlayerPosRow(), model.getPlayerPosColumn(),
+                new ImageIcon(image));
       }
       model.changePlayer(shufflePlayer());
       count++;
@@ -493,7 +565,8 @@ public class ControllerGUI implements Features {
       model.changePlayer(shufflePlayer());
     }
     view.setStatus(String.format("%s's turn | arrows left: %d",
-            playerIndices.get(0).split(",")[1], model.getArrows()));
+            playerIndices.get(0).split(",")[1], model.getArrows()), path
+            + playerIndices.get(0).split(",")[1] + ".png");
   }
 
   // Updates the players position on the maze
@@ -557,23 +630,22 @@ public class ControllerGUI implements Features {
 
 
   private void setKeyBoard() {
-    Map<Character, Runnable> keyTypes = new HashMap<>();
-    Map<Integer, Runnable> keyPresses = new HashMap<>();
-    Map<Integer, Runnable> keyReleases = new HashMap<>();
+    final Map<Character, Runnable> keyTyped = new HashMap<>();
+    final Map<Integer, Runnable> keyPresses = new HashMap<>();
+    final Map<Integer, Runnable> keyReleases = new HashMap<>();
 
-    keyPresses.put(KeyEvent.VK_UP, () -> { // the contents of MakeCaps below
-              this.move("north", false, "0");
-            }
-    );
-    keyPresses.put(KeyEvent.VK_DOWN, () -> { // the contents of MakeCaps below
+    keyPresses.put(KeyEvent.VK_UP, () -> {
+      this.move("north", false, "0");
+    });
+    keyPresses.put(KeyEvent.VK_DOWN, () -> {
               this.move("south", false, "0");
             }
     );
-    keyPresses.put(KeyEvent.VK_LEFT, () -> { // the contents of MakeCaps below
+    keyPresses.put(KeyEvent.VK_LEFT, () -> {
               this.move("west", false, "0");
             }
     );
-    keyPresses.put(KeyEvent.VK_RIGHT, () -> { // the contents of MakeCaps below
+    keyPresses.put(KeyEvent.VK_RIGHT, () -> {
               this.move("east", false, "0");
             }
     );
@@ -582,11 +654,18 @@ public class ControllerGUI implements Features {
             }
     );
 
-    keyReleases.put(KeyEvent.VK_C, () -> { // the contents of MakeOriginal below
+    keyReleases.put(KeyEvent.VK_C, () -> {
             }
     );
+
+    keyTyped.put((char) KeyEvent.VK_C, () -> {
+            }
+    );
+
+
     KeyboardListener kbd = new KeyboardListener();
-    kbd.setKeyTypedMap(keyTypes);
+
+    kbd.setKeyTypedMap(keyTyped);
     kbd.setKeyPressedMap(keyPresses);
     kbd.setKeyReleasedMap(keyReleases);
 
@@ -609,4 +688,15 @@ public class ControllerGUI implements Features {
   }
 
 
+  @Override
+  public String toString() {
+    return "mazeType='" + mazeType + '\''
+            + ", playerOption=" + playerOption
+            + ", rows=" + rows +
+            ", columns=" + columns
+            + ", remainingWalls=" + remainingWalls
+            + ", batPercentage=" + batPercentage
+            + ", pitPercentage=" + pitPercentage
+            + ", wrapping=" + wrapping;
+  }
 }

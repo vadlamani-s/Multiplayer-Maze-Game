@@ -39,7 +39,7 @@ public abstract class AbstractIMaze implements IMaze {
   private final MazeGraph mazeGraph;
   private final BuildFeatures buildFeatures;
   private List<Integer> availablePlayerPositions;
-  public static Random random = new Random();
+  static Random random = new Random();
 
   public static void setRandom(int seed) {
     AbstractIMaze.random = new Random(seed);

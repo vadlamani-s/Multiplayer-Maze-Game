@@ -1,9 +1,18 @@
-import controller.ControllerGUI;
-import view.IView;
+import controller.ControllerGui;
 import view.FormView;
+import view.IView;
 
+
+/**
+ * The type Driver multi player.
+ */
 public class DriverMultiPlayer {
 
+  /**
+   * The entry point of application.
+   *
+   * @param args the input arguments
+   */
   public static void main(String[] args) {
 
     if (args.length == 0) {
@@ -13,7 +22,7 @@ public class DriverMultiPlayer {
         Driver.main(args);
       }
       else if (args[0].equals("--gui")) {
-        ControllerGUI controller = new ControllerGUI();
+        ControllerGui controller = new ControllerGui();
         IView iView = new FormView("Welcome to the Game", controller);
         controller.setView(iView);
       } else {

@@ -63,8 +63,8 @@ public class GamePlay implements IGamePlay {
   /**
    * Gets moves by the player can make depending on if the wall is present.
    *
-   * @param row
-   * @param column
+   * @param row    the row of the room
+   * @param column the column of the room
    * @return the moves as set type
    */
   @Override

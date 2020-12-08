@@ -1,42 +1,64 @@
 package view;
 
-import java.awt.*;
+import java.awt.Container;
+import java.awt.FlowLayout;
+import java.awt.Font;
 import java.io.IOException;
 
-import javax.swing.*;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+import javax.swing.JRadioButton;
+import javax.swing.JButton;
+import javax.swing.ButtonGroup;
+import javax.swing.JOptionPane;
 
-import controller.ControllerGUI;
+
+import controller.ControllerGui;
 import controller.Features;
 
+/**
+ * The type Form view.
+ */
 public class FormView extends JFrame implements IView {
 
 
-  final Container container;
-  final JLabel heading;
-  final JLabel rowLabel;
-  final JLabel columnLabel;
+  private final JTextField mazeSizeRow;
 
-  final JTextField mazeSizeRow;
-  final JTextField mazeSizeColumn;
-  final JLabel mazeType;
-  final JComboBox<String> mazeSelection;
-  final JLabel wallLabel;
-  final JTextField wallsField;
-  final JLabel batLabel;
-  final JTextField batField;
-  final JTextField pitField;
-  final JComboBox<String> playerSelection;
-  final JRadioButton wrappingOptionTrue;
-  final JRadioButton wrappingOptionFalse;
+  private final JTextField mazeSizeColumn;
 
-  final JButton submit;
-  final JButton cancelButton;
-  final ControllerGUI controller;
+  private final JComboBox<String> mazeSelection;
+
+  private final JLabel wallLabel;
+
+  private final JTextField wallsField;
+
+  private final JTextField batField;
+
+  private final JTextField pitField;
+
+  private final JComboBox<String> playerSelection;
+
+  private final JRadioButton wrappingOptionTrue;
+
+  private final JRadioButton wrappingOptionFalse;
+
+  private final JButton submit;
+
+  private final JButton cancelButton;
 
 
-  public FormView(String title, ControllerGUI controller) {
+  /**
+   * Instantiates a new Form view.
+   *
+   * @param title      the title
+   * @param controller the controller
+   */
+  public FormView(String title, ControllerGui controller) {
     super(title);
-    this.controller = controller;
 
     setSize(475, 400);
     setLocation(200, 200);
@@ -46,24 +68,24 @@ public class FormView extends JFrame implements IView {
     // Read about it
     this.setLayout(new FlowLayout());
     setResizable(false);
-    container = getContentPane();
+    Container container = getContentPane();
     container.setLayout(null);
 
     // Create banner/label
-    heading = new JLabel("Lets kill the Wumpus !!!!");
+    JLabel heading = new JLabel("Lets kill the Wumpus !!!!");
     heading.setFont(new Font("Didot", Font.BOLD, 20));
     heading.setSize(500, 25);
     heading.setLocation(125, 25);
     this.add(heading);
 
     //Maze Creation Options, rows and columns
-    rowLabel = new JLabel("Input the Rows in the Maze");
+    JLabel rowLabel = new JLabel("Input the Rows in the Maze");
     rowLabel.setFont(new Font("Didot", Font.PLAIN, 15));
     rowLabel.setSize(500, 25);
     rowLabel.setLocation(50, 75);
     this.add(rowLabel);
 
-    columnLabel = new JLabel("Input the Columns in the Maze");
+    JLabel columnLabel = new JLabel("Input the Columns in the Maze");
     columnLabel.setFont(new Font("Didot", Font.PLAIN, 15));
     columnLabel.setSize(500, 25);
     columnLabel.setLocation(50, 100);
@@ -82,7 +104,7 @@ public class FormView extends JFrame implements IView {
     this.add(mazeSizeColumn);
 
     // Maze Kind -> perfect or imperfect
-    mazeType = new JLabel("Choose the type of Maze");
+    JLabel mazeType = new JLabel("Choose the type of Maze");
     mazeType.setFont(new Font("Arial", Font.PLAIN, 15));
     mazeType.setSize(500, 25);
     mazeType.setLocation(50, 125);
@@ -113,7 +135,7 @@ public class FormView extends JFrame implements IView {
 
 
     // Bat percentage
-    batLabel = new JLabel("Input the Bat Percentage");
+    JLabel batLabel = new JLabel("Input the Bat Percentage");
     batLabel.setFont(new Font("Didot", Font.PLAIN, 15));
     batLabel.setSize(500, 25);
     batLabel.setLocation(50, 175);
@@ -210,6 +232,11 @@ public class FormView extends JFrame implements IView {
   }
 
   @Override
+  public void disableVisibility(int row, int column) {
+    throw new IllegalArgumentException("Shouldn't be here");
+  }
+
+  @Override
   public void moveVisibility() {
     throw new IllegalArgumentException("Shouldn't be here");
   }
@@ -241,11 +268,6 @@ public class FormView extends JFrame implements IView {
   }
 
   @Override
-  public void disableVisibility(int row, int column) {
-    throw new IllegalArgumentException("Shouldn't be here");
-  }
-
-  @Override
   public int gameEndPopUp(String message) {
     throw new IllegalArgumentException("Shouldn't be here");
   }
@@ -256,17 +278,17 @@ public class FormView extends JFrame implements IView {
   }
 
   @Override
-  public void setStatus(String text) {
+  public void setStatus(String text, String imagePath) {
     throw new IllegalArgumentException("Shouldn't be here");
   }
 
   @Override
   public void setFeatures(Features features) {
-    mazeSelection.addItemListener(l -> features.
-            processMazeType((String) ((JComboBox) l.getSource()).getSelectedItem()));
+    mazeSelection.addItemListener(l -> features.processMazeType((String) ((JComboBox)
+            l.getSource()).getSelectedItem()));
 
-    playerSelection.addItemListener(l -> features.
-            playerInGame((String) ((JComboBox) l.getSource()).getSelectedItem()));
+    playerSelection.addItemListener(l -> features.playerInGame((String) ((JComboBox)
+            l.getSource()).getSelectedItem()));
 
     submit.addActionListener(l -> {
       try {

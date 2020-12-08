@@ -1,7 +1,6 @@
 package maze;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -42,9 +41,6 @@ public class GamePlayExtended extends GamePlay implements IGamePlayExtended {
               && currentNode.getFeatureList().contains(Features.PIT)) {
         int prevPosition = player.getPositionNumber();
         return batPitRandomMove();
-//        if (prevPosition == player.getPositionNumber()) {
-//          return gameOver();
-//        }
       }
       if (currentNode.getFeatureList().contains(Features.PIT)) {
         return Messages.PIT;

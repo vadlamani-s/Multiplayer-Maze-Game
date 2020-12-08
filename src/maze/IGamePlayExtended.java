@@ -38,6 +38,11 @@ public interface IGamePlayExtended extends IGamePlay {
    */
   Set<Integer> getMoveMemory();
 
+  /**
+   * Gets the arrows the player is carrying.
+   *
+   * @return the arrows in the maze
+   */
   int getArrows();
 
 }

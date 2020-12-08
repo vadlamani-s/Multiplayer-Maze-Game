@@ -1,20 +1,38 @@
 package view;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
-import javax.swing.*;
+import javax.imageio.ImageIO;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 
-import controller.ControllerGUI;
+
+import controller.ControllerGui;
 import controller.Features;
 
+/**
+ * The type Maze view new.
+ */
 public class MazeViewNew extends JFrame implements IView {
 
-  private JPanel panelMaze;
-  private JPanel panelButton;
-  private JPanel panelMove;
-  private JPanel panelShoot;
-  private JButton move;
-  private JButton shoot;
+  private final JPanel panelMove;
+  private final JPanel panelShoot;
+  private final JButton move;
+  private final JButton shoot;
   private JTextField shootField;
   private final JPanel[][] grid;
   private JButton north;
@@ -23,20 +41,29 @@ public class MazeViewNew extends JFrame implements IView {
   private JButton west;
   private boolean actionFlag = false;
   private JLabel shootText;
-  private JLabel statusBar;
-  private JPanel panelStatus;
-  private GridBagConstraints constraints;
+  private final JLabel statusBar;
+  private final GridBagConstraints constraints;
 
-  public MazeViewNew(int rows, int columns, ControllerGUI controller, String path) {
+  /**
+   * Instantiates a new Maze view new.
+   *
+   * @param rows       the rows
+   * @param columns    the columns
+   * @param controller the controller
+   */
+  public MazeViewNew(int rows, int columns, ControllerGui controller) {
     this.setTitle("Maze");
     getContentPane().setLayout(new GridBagLayout());
     constraints = new GridBagConstraints();
 
     this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     this.setSize(800, 800);
+    this.setSize(Toolkit.getDefaultToolkit().getScreenSize());
+    this.setResizable(false);
+    this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
     // Pane for Maze
-    panelMaze = new JPanel();
+    JPanel panelMaze = new JPanel();
     constraints.gridy = 0;
     constraints.ipadx = 700;
     constraints.ipady = 700;
@@ -44,18 +71,16 @@ public class MazeViewNew extends JFrame implements IView {
     JScrollPane scroll = new JScrollPane(panelMaze);
     getContentPane().add(scroll, constraints);
 
-    panelStatus = new JPanel();
+    JPanel panelStatus = new JPanel();
     constraints.gridy = 1;
     constraints.ipadx = 0;
     constraints.ipady = 0;
     constraints.fill = GridBagConstraints.HORIZONTAL;
     getContentPane().add(panelStatus, constraints);
 
-    panelButton = new JPanel();
-//    constraints.gridy = 3;
+    JPanel panelButton = new JPanel();
     constraints.fill = GridBagConstraints.HORIZONTAL;
     panelStatus.add(panelButton);
-//    getContentPane().add(panelButton, constraints);
 
     // Maze build
     panelMaze.setLayout(new GridBagLayout());
@@ -67,7 +92,7 @@ public class MazeViewNew extends JFrame implements IView {
         grid[i][j].setLayout(new GridLayout(1, 1));
         grid[i][j].setVisible(true);
         grid[i][j].add(new JLabel());
-        JLabel label =  (JLabel) grid[i][j].getComponent(0);
+        JLabel label = (JLabel) grid[i][j].getComponent(0);
         grid[i][j].setBackground(Color.BLACK);
         label.setBackground(Color.BLACK);
         label.setVisible(false);
@@ -109,28 +134,31 @@ public class MazeViewNew extends JFrame implements IView {
 
   @Override
   public void populateImage(int row, int column, ImageIcon imageIcon) {
-    JLabel label =  (JLabel) grid[row][column].getComponent(0);
+    JLabel label = (JLabel) grid[row][column].getComponent(0);
     label.setIcon(imageIcon);
   }
 
   @Override
   public Icon getImage(int row, int column) {
-    JLabel label =  (JLabel) grid[row][column].getComponent(0);
+    JLabel label = (JLabel) grid[row][column].getComponent(0);
     return label.getIcon();
   }
 
-
+  @Override
   public void setVisibility(int row, int column) {
-    JLabel label =  (JLabel) grid[row][column].getComponent(0);
+    JLabel label = (JLabel) grid[row][column].getComponent(0);
     label.setVisible(true);
-//    grid[row][column].setVisible(true);
   }
 
-  public void disableVisibility(int row, int column) {
-    JLabel label =  (JLabel) grid[row][column].getComponent(0);
-    label.setVisible(false);
-//    grid[row][column].setVisible(false);
+  @Override
+  public void disableVisibility() {
+    this.setVisible(false);
+  }
 
+  @Override
+  public void disableVisibility(int row, int column) {
+    JLabel label = (JLabel) grid[row][column].getComponent(0);
+    label.setVisible(false);
   }
 
   private void moveButtons() {
@@ -143,12 +171,13 @@ public class MazeViewNew extends JFrame implements IView {
     constraints.gridx = 0;
     getContentPane().add(panelMove, constraints);
 
-
-//    getContentPane().add(panelMove);
   }
 
-  public void setStatus(String text) {
+  @Override
+  public void setStatus(String text, String imagePath) throws IOException {
     statusBar.setText(text);
+    BufferedImage image =  ImageIO.read(new File(imagePath));
+    statusBar.setIcon((new ImageIcon(image)));
   }
 
 
@@ -173,7 +202,7 @@ public class MazeViewNew extends JFrame implements IView {
     shootField.setSize(100, 100);
     shootField.setLocation(400, 100);
 
-    shootText = new JLabel("Enter the moves");
+    shootText = new JLabel("Enter the moves the arrow needs to move");
 
     panelShoot.add(north);
     panelShoot.add(south);
@@ -185,7 +214,6 @@ public class MazeViewNew extends JFrame implements IView {
     constraints.fill = GridBagConstraints.BOTH;
     constraints.gridx = 0;
     getContentPane().add(panelShoot, constraints);
-//    getContentPane().add(panelShoot);
   }
 
 
@@ -256,10 +284,7 @@ public class MazeViewNew extends JFrame implements IView {
     throw new IllegalArgumentException("Shouldn't be here");
   }
 
-  @Override
-  public void disableVisibility() {
-    this.setVisible(false);
-  }
+
 
   @Override
   public void moveVisibility() {

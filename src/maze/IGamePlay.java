@@ -12,9 +12,9 @@ public interface IGamePlay {
   /**
    * Gets moves by the player can make depending on if the wall is present.
    *
+   * @param row    the current row of the room/cave
+   * @param column the current column of the room/cave
    * @return the moves as set type
-   * @param row
-   * @param column
    */
   Set<Directions> getMoves(int row, int column);
 

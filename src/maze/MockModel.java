@@ -1,8 +1,6 @@
 package maze;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -88,5 +86,6 @@ public class MockModel implements IGamePlayExtended {
 
   @Override
   public void updatePlayerPosition(int playerRow, int playerColumn) {
+    logIn.append("Input: ").append(playerRow).append(" ").append(playerColumn);
   }
 }

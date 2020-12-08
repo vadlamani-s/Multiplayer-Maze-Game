@@ -5,18 +5,13 @@ import java.awt.event.KeyListener;
 import java.util.Map;
 
 /**
- * Citation: Code was given by the Professor as part of the class.
- * <p>
- * This class represents a keyboard listener. It is configurable by the controller that instantiates
- * it.
- * <p>
- * This listener keeps three maps, one each for key typed, key pressed and key released Each map
- * stores a key mapping. A key mapping is a pair (keystroke,code to be executed with that keystroke)
- * The latter part of that pair is actually a function object, i.e. an object of a class that
- * implements the Runnable interface
- * <p>
- * This class implements the KeyListener interface, so that its object can be used as a valid
- * keylistener for Java Swing.
+ * Citation: Code was given by the Professor as part of the class. This class represents a keyboard
+ * listener. It is configurable by the controller that instantiates it. This listener keeps three
+ * maps, one each for key typed, key pressed and key released Each map stores a key mapping. A key
+ * mapping is a pair (keystroke,code to be executed with that keystroke) The latter part of that
+ * pair is actually a function object, i.e. an object of a class that implements the Runnable
+ * interface This class implements the KeyListener interface, so that its object can be used as a
+ * valid keylistener for Java Swing.
  */
 public class KeyboardListener implements KeyListener {
   private Map<Character, Runnable> keyTypedMap;
@@ -64,7 +59,7 @@ public class KeyboardListener implements KeyListener {
    * This is called when the view detects that a key has been typed. Find if anything has been
    * mapped to this key character and if so, execute it
    *
-   * @param e
+   * @param e the event is passed as an argument
    */
 
   @Override
@@ -78,7 +73,7 @@ public class KeyboardListener implements KeyListener {
    * This is called when the view detects that a key has been pressed. Find if anything has been
    * mapped to this key code and if so, execute it
    *
-   * @param e
+   * @param e the event is passed as an argument
    */
 
   @Override
@@ -92,7 +87,7 @@ public class KeyboardListener implements KeyListener {
    * This is called when the view detects that a key has been released. Find if anything has been
    * mapped to this key code and if so, execute it
    *
-   * @param e
+   * @param e the event is passed as an argument
    */
 
   @Override
