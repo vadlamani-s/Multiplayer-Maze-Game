@@ -176,7 +176,7 @@ public class MazeViewNew extends JFrame implements IView {
   @Override
   public void setStatus(String text, String imagePath) throws IOException {
     statusBar.setText(text);
-    BufferedImage image =  ImageIO.read(new File(imagePath));
+    BufferedImage image = ImageIO.read(new File(imagePath));
     statusBar.setIcon((new ImageIcon(image)));
   }
 
@@ -283,7 +283,6 @@ public class MazeViewNew extends JFrame implements IView {
   public void remainingWallsFieldState(boolean flag) {
     throw new IllegalArgumentException("Shouldn't be here");
   }
-
 
 
   @Override

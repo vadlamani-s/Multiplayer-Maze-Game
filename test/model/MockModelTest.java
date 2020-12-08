@@ -1,3 +1,5 @@
+package model;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -5,7 +7,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import controller.Controller;
-import maze.MockModel;
+import model.MockModel;
 
 import static org.junit.Assert.assertEquals;
 

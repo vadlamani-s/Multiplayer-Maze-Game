@@ -62,8 +62,8 @@ public abstract class AbstractIMaze implements IMaze {
       throw new IllegalArgumentException("invalid percentage value, has to be between 0 and 100");
     }
 
-    if (rows <= 1 && columns <= 1) {
-      throw new IllegalArgumentException("rows and columns cannot be less than or equal to 1");
+    if (rows <= 2 || columns <= 2) {
+      throw new IllegalArgumentException("rows and columns cannot be less than or equal to 2");
     }
     int minWalls = rows * (columns - 1) + columns * (rows - 1) - (rows * columns) + 1;
 

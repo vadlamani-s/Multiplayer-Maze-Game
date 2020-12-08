@@ -71,7 +71,6 @@ public class Driver {
 
       IController controller = new Controller(reader, System.out);
       controller.start(gamePlay);
-      System.out.println(gamePlay.getMoveMemory());
 
     } catch (IllegalArgumentException | IOException e) {
       e.printStackTrace();

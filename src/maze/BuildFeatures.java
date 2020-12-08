@@ -117,6 +117,10 @@ class BuildFeatures extends MazeGraph {
     int numberOfBats = (int) Math.floor(numberOfCaves * batPercentage * 0.01);
     int numberOfPits = (int) Math.floor(numberOfCaves * pitPercentage * 0.01);
     int goldCount = (int) Math.ceil(numberOfCaves * 0.2);
+    if (numberOfCaves <= 2) {
+      numberOfBats = 0;
+      numberOfPits = 0;
+    }
     goldList = goldAndBatListGeneration(rows * columns, goldCount, hallwayList,
             wampusLocation);
     batList = goldAndBatListGeneration(rows * columns, numberOfBats, hallwayList,

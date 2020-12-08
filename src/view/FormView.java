@@ -175,7 +175,7 @@ public class FormView extends JFrame implements IView {
     this.add(playerSelection);
 
     // Wrapping Option
-    JLabel wrappingLabel = new JLabel("Choose the type of Maze");
+    JLabel wrappingLabel = new JLabel("Choose wrapping type");
     wrappingLabel.setFont(new Font("Didot", Font.PLAIN, 15));
     wrappingLabel.setSize(500, 25);
     wrappingLabel.setLocation(50, 260);

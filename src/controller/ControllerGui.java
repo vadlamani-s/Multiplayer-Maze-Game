@@ -49,9 +49,9 @@ public class ControllerGui implements Features {
   private final Set<Integer> memory;
 
   private final String path = Paths.get("").toAbsolutePath().toString() + "\\" + "res\\"
-          + "hunt-the-wumpus-images/hunt-the-wumpus-images/";
+          + "hunt-the-wumpus-images\\hunt-the-wumpus-images\\";
 
-  
+
 //  private final String path = "C:/Users/Satyanarayana/Documents/CS5010/projects/HW6/"
 
   private final Map<Set<String>, String> textImageMap;
@@ -254,35 +254,35 @@ public class ControllerGui implements Features {
 
       String playerNum = playerIndices.remove(index);
       if (playerIndices.size() >= 1) {
-        throw new IllegalArgumentException(playerNum.split(",")[1] + " "
+        throw new IllegalArgumentException(playerNum.split(",")[1] + " | "
                 + Messages.getMessages(Messages.PIT));
       } else {
-        action = view.gameEndPopUp(playerNum.split(",")[1] + " "
+        action = view.gameEndPopUp(playerNum.split(",")[1] + " | "
                 + Messages.getMessages(Messages.PIT));
         endPopUpImpl(action);
       }
     }
 
     if (message == Messages.ARROWMISS) {
-      throw new IllegalArgumentException(playerIndices.get(index).split(",")[1] + " "
+      throw new IllegalArgumentException(playerIndices.get(index).split(",")[1] + " | "
               + Messages.getMessages(Messages.ARROWMISS));
     }
 
     if (message == Messages.WAMPUSMISS) {
-      throw new IllegalArgumentException(playerIndices.get(index).split(",")[1] + " "
+      throw new IllegalArgumentException(playerIndices.get(index).split(",")[1] + " | "
               + Messages.getMessages(Messages.WAMPUSMISS));
     }
     if (message == Messages.NOTBAT) {
-      throw new IllegalArgumentException(playerIndices.get(index).split(",")[1] + " "
+      throw new IllegalArgumentException(playerIndices.get(index).split(",")[1] + " | "
               + Messages.getMessages(Messages.NOTBAT));
     }
     if (message == Messages.NOARROWS) {
       String playerNum = playerIndices.remove(index);
       if (playerIndices.size() >= 1) {
-        throw new IllegalArgumentException(playerNum.split(",")[1] + " "
+        throw new IllegalArgumentException(playerNum.split(",")[1] + " | "
                 + Messages.getMessages(Messages.NOARROWS));
       } else {
-        action = view.gameEndPopUp(playerNum.split(",")[1] + " "
+        action = view.gameEndPopUp(playerNum.split(",")[1] + " | "
                 + Messages.getMessages(Messages.NOARROWS));
         endPopUpImpl(action);
       }
@@ -290,10 +290,10 @@ public class ControllerGui implements Features {
     if (message == Messages.GAMEOVER) {
       String playerNum = playerIndices.remove(index);
       if (playerIndices.size() >= 1) {
-        throw new IllegalArgumentException(playerNum.split(",")[1] + " "
+        throw new IllegalArgumentException(playerNum.split(",")[1] + " | "
                 + Messages.getMessages(Messages.GAMEOVER));
       } else {
-        action = view.gameEndPopUp(playerNum.split(",")[1] + " "
+        action = view.gameEndPopUp(playerNum.split(",")[1] + " | "
                 + Messages.getMessages(Messages.GAMEOVER));
         endPopUpImpl(action);
       }
@@ -301,10 +301,10 @@ public class ControllerGui implements Features {
     if (message == Messages.BATPIT) {
       String playerNum = playerIndices.remove(index);
       if (playerIndices.size() >= 1) {
-        throw new IllegalArgumentException(playerNum.split(",")[1] + " "
+        throw new IllegalArgumentException(playerNum.split(",")[1] + " | "
                 + Messages.getMessages(Messages.BATPIT));
       } else {
-        action = view.gameEndPopUp(playerNum.split(",")[1] + " "
+        action = view.gameEndPopUp(playerNum.split(",")[1] + " | "
                 + Messages.getMessages(Messages.BATPIT));
         endPopUpImpl(action);
       }
@@ -313,10 +313,10 @@ public class ControllerGui implements Features {
     if (message == Messages.BATWAMPUS) {
       String playerNum = playerIndices.remove(index);
       if (playerIndices.size() >= 1) {
-        throw new IllegalArgumentException(playerNum.split(",")[1] + " "
+        throw new IllegalArgumentException(playerNum.split(",")[1] + " | "
                 + Messages.getMessages(Messages.BATWAMPUS));
       } else {
-        action = view.gameEndPopUp(playerNum.split(",")[1] + " "
+        action = view.gameEndPopUp(playerNum.split(",")[1] + " | "
                 + Messages.getMessages(Messages.BATWAMPUS));
         endPopUpImpl(action);
       }
@@ -325,10 +325,10 @@ public class ControllerGui implements Features {
     if (message == Messages.WAMPUS) {
       String playerNum = playerIndices.remove(index);
       if (playerIndices.size() >= 1) {
-        throw new IllegalArgumentException(playerNum.split(",")[1] + " "
+        throw new IllegalArgumentException(playerNum.split(",")[1] + " | "
                 + Messages.getMessages(Messages.WAMPUS));
       } else {
-        action = view.gameEndPopUp(playerNum.split(",")[1] + " "
+        action = view.gameEndPopUp(playerNum.split(",")[1] + " | "
                 + Messages.getMessages(Messages.WAMPUS));
         endPopUpImpl(action);
       }
@@ -422,8 +422,15 @@ public class ControllerGui implements Features {
   //Players are updated to the Map having playerName and index
   @Override
   public void playerInGame(String playersInGame) {
-    this.playerOption = Integer.parseInt(String.valueOf(playersInGame.charAt(0)));
-    updatePlayerIndices();
+    try {
+      if (playersInGame.equals("") || playersInGame.equals(" ")) {
+        throw new IllegalArgumentException("Please select a player");
+      }
+      this.playerOption = Integer.parseInt(String.valueOf(playersInGame.charAt(0)));
+      updatePlayerIndices();
+    } catch (Exception e) {
+      view.popUpBox(e.getMessage());
+    }
   }
 
   private void updatePlayerIndices() {
@@ -438,13 +445,16 @@ public class ControllerGui implements Features {
   public void processInput(String inputs) throws IOException {
     try {
       String[] list = inputs.split(",");
-      rows = Integer.parseInt(list[0]);
-      columns = Integer.parseInt(list[1]);
-      remainingWalls = list[2].equals("") ? 0 : Integer.parseInt(list[2]);
-      batPercentage = Integer.parseInt(list[3]);
-      pitPercentage = Integer.parseInt(list[4]);
+      if (list.length < 5) {
+        throw new IllegalArgumentException("Fill all the fields");
+      }
+      rows = list[0].equals("") ? 0 : Integer.parseInt(list[0]);
+      columns = list[1].equals("") ? 0 : Integer.parseInt(list[1]);
+      remainingWalls = list[2].equals("") ? -1 : Integer.parseInt(list[2]);
+      batPercentage = list[3].equals("") ? -1 : Integer.parseInt(list[3]);
+      pitPercentage = list[4].equals("") ? -1 : Integer.parseInt(list[4]);
       if (list.length < 6) {
-        throw new IllegalArgumentException("Select wrapping or non Wrapping");
+        throw new IllegalArgumentException("Select Wrapping or non Wrapping");
       }
       wrapping = Boolean.parseBoolean(list[5]);
     } catch (Exception e) {
@@ -459,10 +469,9 @@ public class ControllerGui implements Features {
   private void setModel() throws IOException {
     IMaze maze = null;
     try {
-      if (mazeType == null) {
-        throw new IllegalArgumentException("select the maze type");
+      if (mazeType == null || mazeType.equals("")) {
+        throw new IllegalArgumentException("Select the Maze Type");
       }
-
       if (mazeType.equals("perfect")) {
         maze = new PerfectMaze(rows, columns, wrapping, batPercentage, pitPercentage);
       }

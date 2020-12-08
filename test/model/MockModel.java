@@ -1,7 +1,11 @@
-package maze;
+package model;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import maze.Directions;
+import maze.IGamePlayExtended;
+import maze.Messages;
 
 /**
  * The type Mock model.
