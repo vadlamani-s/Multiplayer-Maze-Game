@@ -246,4 +246,9 @@ public class GamePlayExtended extends GamePlay implements IGamePlayExtended {
     }
   }
 
+  @Override
+  public int getArrows() {
+    return player.getArrows();
+  }
+
 }

@@ -38,4 +38,6 @@ public interface IGamePlayExtended extends IGamePlay {
    */
   Set<Integer> getMoveMemory();
 
+  int getArrows();
+
 }

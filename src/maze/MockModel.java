@@ -42,6 +42,11 @@ public class MockModel implements IGamePlayExtended {
   }
 
   @Override
+  public int getArrows() {
+    return logOut;
+  }
+
+  @Override
   public Set<Directions> getMoves(int row, int column) {
     return new HashSet<>();
   }

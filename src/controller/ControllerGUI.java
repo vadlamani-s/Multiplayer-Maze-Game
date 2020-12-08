@@ -316,18 +316,22 @@ public class ControllerGUI implements Features {
   // actionFlag -> false for move; actionFlag -> true for shoot
   @Override
   public void move(String move, boolean actionFlag, String shootMoves) {
-    view.setStatus(String.format("%s's turn", playerIndices.get(0).split(",")[1]));
     Messages messages;
     Directions direction = stringDirectionsMap.get(move);
     try {
       int number = shootMoves.equals("") ? 0 : getShootMoves(shootMoves);
       if (actionFlag) {
         messages = model.arrowMakeMove(direction, number);
-//        model.changePlayer(shufflePlayer());
+        model.changePlayer(shufflePlayer());
+        view.setStatus(String.format("%s's turn | arrows left: %d",
+                playerIndices.get(0).split(",")[1], model.getArrows()));
       } else {
         messages = model.makeMove(direction);
         playGame(false);
+        // player's state changed
         model.changePlayer(shufflePlayer());
+        view.setStatus(String.format("%s's turn | arrows left: %d",
+                playerIndices.get(0).split(",")[1], model.getArrows()));
       }
       messageCheck(messages);
     } catch (Exception e) {
@@ -408,7 +412,7 @@ public class ControllerGUI implements Features {
       return;
     }
     view.disableVisibility();
-    view = new MazeViewNew(rows, columns, this);
+    view = new MazeViewNew(rows, columns, this, path);
     view.resetFocus();
     setView(view);
     playGame(true);
@@ -483,24 +487,23 @@ public class ControllerGUI implements Features {
   private void initialisePlayers() throws IOException {
     int count = 0;
     while (count < playerIndices.size()) {
-//      model.changePlayer(count);
       updatePlayerImage(playerIndices.get(0).split(",")[1]);
       memory.addAll(model.getMoveMemory());
       count++;
       model.changePlayer(shufflePlayer());
     }
-//    model.changePlayer(shufflePlayer());
-    view.setStatus(String.format("%s's turn", playerIndices.get(0).split(",")[1]));
-    System.out.println(playerIndices);
+    view.setStatus(String.format("%s's turn | arrows left: %d",
+            playerIndices.get(0).split(",")[1], model.getArrows()));
   }
 
   // Updates the players position on the maze
   private void updatePlayerImage(String playerImage) throws IOException {
+    int offset = playerImage.equals("player1") ? 10 : 20;
     String playerPath = path + playerImage + ".png";
     ImageIcon imageIcon = (ImageIcon) view.getImage(model.getPlayerPosRow(),
             model.getPlayerPosColumn());
     BufferedImage image = (BufferedImage) imageIcon.getImage();
-    image = overlay(image, playerPath, 10);
+    image = overlay(image, playerPath, offset);
     view.populateImage(model.getPlayerPosRow(), model.getPlayerPosColumn(), new ImageIcon(image));
     view.setVisibility(model.getPlayerPosRow(), model.getPlayerPosColumn());
   }
@@ -562,22 +565,18 @@ public class ControllerGUI implements Features {
               this.move("north", false, "0");
             }
     );
-
     keyPresses.put(KeyEvent.VK_DOWN, () -> { // the contents of MakeCaps below
               this.move("south", false, "0");
             }
     );
-
     keyPresses.put(KeyEvent.VK_LEFT, () -> { // the contents of MakeCaps below
               this.move("west", false, "0");
             }
     );
-
     keyPresses.put(KeyEvent.VK_RIGHT, () -> { // the contents of MakeCaps below
               this.move("east", false, "0");
             }
     );
-
     keyPresses.put(KeyEvent.VK_C, () -> {
               this.bounty();
             }

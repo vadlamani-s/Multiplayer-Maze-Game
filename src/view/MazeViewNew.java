@@ -16,7 +16,7 @@ public class MazeViewNew extends JFrame implements IView {
   private JButton move;
   private JButton shoot;
   private JTextField shootField;
-  private final JLabel[][] grid;
+  private final JPanel[][] grid;
   private JButton north;
   private JButton south;
   private JButton east;
@@ -27,77 +27,76 @@ public class MazeViewNew extends JFrame implements IView {
   private JPanel panelStatus;
   private GridBagConstraints constraints;
 
-  public MazeViewNew(int rows, int columns, ControllerGUI controller) {
+  public MazeViewNew(int rows, int columns, ControllerGUI controller, String path) {
     this.setTitle("Maze");
     getContentPane().setLayout(new GridBagLayout());
-
     constraints = new GridBagConstraints();
 
     this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    this.setSize(500, 500);
+    this.setSize(800, 800);
 
     // Pane for Maze
     panelMaze = new JPanel();
-//    constraints.gridx = 1;
-//    constraints.gridy = 0;
-    constraints.ipadx = 900;
-    constraints.ipady = 900;
+    constraints.gridy = 0;
+    constraints.ipadx = 700;
+    constraints.ipady = 700;
     constraints.fill = GridBagConstraints.BOTH;
     JScrollPane scroll = new JScrollPane(panelMaze);
     getContentPane().add(scroll, constraints);
 
     panelStatus = new JPanel();
+    constraints.gridy = 1;
+    constraints.ipadx = 0;
+    constraints.ipady = 0;
+    constraints.fill = GridBagConstraints.HORIZONTAL;
+    getContentPane().add(panelStatus, constraints);
+
     panelButton = new JPanel();
-    statusBar = new JLabel();
+//    constraints.gridy = 3;
+    constraints.fill = GridBagConstraints.HORIZONTAL;
+    panelStatus.add(panelButton);
+//    getContentPane().add(panelButton, constraints);
 
-
-    panelMaze.setMaximumSize(new Dimension(300, 300));
-    panelStatus.setMaximumSize(new Dimension(500, 50));
-    panelButton.setMaximumSize(new Dimension(500, 50));
-
-
-//    panelMaze.setLayout(new GridLayout(rows, columns, -2, -2));
+    // Maze build
     panelMaze.setLayout(new GridBagLayout());
-    grid = new JLabel[rows][columns];
+    grid = new JPanel[rows][columns];
 
     for (int i = 0; i < rows; i++) {
       for (int j = 0; j < columns; j++) {
-        grid[i][j] = new JLabel();
+        grid[i][j] = new JPanel();
+        grid[i][j].setLayout(new GridLayout(1, 1));
+        grid[i][j].setVisible(true);
+        grid[i][j].add(new JLabel());
+        JLabel label =  (JLabel) grid[i][j].getComponent(0);
+        grid[i][j].setBackground(Color.BLACK);
+        label.setBackground(Color.BLACK);
+        label.setVisible(false);
         constraints.gridx = j;
         constraints.gridy = i;
         constraints.ipadx = 0;
         constraints.ipady = 0;
-        constraints.fill = GridBagConstraints.BOTH;
         panelMaze.add(grid[i][j], constraints);
-        grid[i][j].setVisible(false);
       }
     }
+    panelMaze.setBackground(Color.BLACK);
 
-    panelMaze.setBackground(Color.GRAY);
-
-    panelButton.setSize(500, 200);
-
+    statusBar = new JLabel();
     panelStatus.add(statusBar);
 
-
+    panelButton.setSize(500, 50);
     move = new JButton("Move");
     move.setActionCommand("Move");
-    move.setSize(100, 100);
+    move.setSize(100, 50);
 
     shoot = new JButton("Shoot");
     shoot.setActionCommand("Shoot");
-    shoot.setSize(100, 100);
-
+    shoot.setSize(100, 50);
 
     panelButton.add(move);
     panelButton.add(shoot);
-    getContentPane().add(panelButton);
-    getContentPane().add(panelStatus);
 
     panelShoot = new JPanel();
     panelMove = new JPanel();
-    panelButton.setMaximumSize(new Dimension(500, 50));
-    panelButton.setMaximumSize(new Dimension(500, 50));
 
     shootButtons();
     moveButtons();
@@ -110,21 +109,28 @@ public class MazeViewNew extends JFrame implements IView {
 
   @Override
   public void populateImage(int row, int column, ImageIcon imageIcon) {
-    grid[row][column].setIcon(imageIcon);
+    JLabel label =  (JLabel) grid[row][column].getComponent(0);
+    label.setIcon(imageIcon);
   }
 
   @Override
   public Icon getImage(int row, int column) {
-    return grid[row][column].getIcon();
+    JLabel label =  (JLabel) grid[row][column].getComponent(0);
+    return label.getIcon();
   }
 
 
   public void setVisibility(int row, int column) {
-    grid[row][column].setVisible(true);
+    JLabel label =  (JLabel) grid[row][column].getComponent(0);
+    label.setVisible(true);
+//    grid[row][column].setVisible(true);
   }
 
   public void disableVisibility(int row, int column) {
-    grid[row][column].setVisible(false);
+    JLabel label =  (JLabel) grid[row][column].getComponent(0);
+    label.setVisible(false);
+//    grid[row][column].setVisible(false);
+
   }
 
   private void moveButtons() {
@@ -132,7 +138,13 @@ public class MazeViewNew extends JFrame implements IView {
     panelMove.add(south);
     panelMove.add(east);
     panelMove.add(west);
-    getContentPane().add(panelMove);
+    constraints.gridy = 2;
+    constraints.fill = GridBagConstraints.BOTH;
+    constraints.gridx = 0;
+    getContentPane().add(panelMove, constraints);
+
+
+//    getContentPane().add(panelMove);
   }
 
   public void setStatus(String text) {
@@ -169,8 +181,11 @@ public class MazeViewNew extends JFrame implements IView {
     panelShoot.add(west);
     panelShoot.add(shootText);
     panelShoot.add(shootField);
-
-    getContentPane().add(panelShoot);
+    constraints.gridy = 3;
+    constraints.fill = GridBagConstraints.BOTH;
+    constraints.gridx = 0;
+    getContentPane().add(panelShoot, constraints);
+//    getContentPane().add(panelShoot);
   }
 
 
