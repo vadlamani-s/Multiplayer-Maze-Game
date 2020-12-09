@@ -237,7 +237,10 @@ public class GamePlayExtended extends GamePlay implements IGamePlayExtended {
               * this.iMaze.getRows());
       int[] locationCoord = this.iMaze.getNumberToCoordinate().get(location);
       player.setPosition(new Position(locationCoord[0], locationCoord[1]));
-      player.getMoveMemory().add(player.getPositionNumber());
+      if (!this.iMaze.getNode(player.getPositionNumber()).getFeatureList()
+              .contains(Features.HALLWAY)) {
+        player.getMoveMemory().add(player.getPositionNumber());
+      }
       batPick = AbstractIMaze.random.nextBoolean();
     }
   }

@@ -7,24 +7,25 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 
-import controller.Features;
+import controller.IControllerGui;
 
 /**
- * The interface View.
+ * The interface View has all the functionalities required for each of the views in the game. The
+ * interface has functions for setting the view as well as the features in the view.
  */
 public interface IView {
 
   /**
-   * Sets features initialises all the action listeners in which are being used by the view in the
-   * game. The features is an interface of the controller.
+   * Sets IControllerGui initialises all the action listeners in which are being used by the view in
+   * the game. The IControllerGui is an interface of the controller.
    *
-   * @param features the features is an interface of controller
+   * @param iControllerGui the IControllerGui is an interface of controller
    */
-  void setFeatures(Features features);
+  void setFeatures(IControllerGui iControllerGui);
 
   /**
-   * Remaining walls field state checks if the remaining field has to be visible or not based on
-   * the type of maze being used.
+   * Remaining walls field state checks if the remaining field has to be visible or not based on the
+   * type of maze being used.
    *
    * @param flag the flag is true if maze is imperfect else false
    */
@@ -36,8 +37,8 @@ public interface IView {
   void disableVisibility();
 
   /**
-   * Disable visibility disables the visibility of the view of each grid of maze taking in the
-   * row and column number of the grid.
+   * Disable visibility disables the visibility of the view of each grid of maze taking in the row
+   * and column number of the grid.
    *
    * @param row    the row number of the grid
    * @param column the column number of the grid
@@ -76,7 +77,7 @@ public interface IView {
    * @param column the column number of the room
    * @return the image icon to be stored in the room
    */
-  Icon getImage(int row, int column);
+  Icon getImage(int row, int column) throws IOException;
 
   /**
    * Pop up box, displays a message as a prompt on the screen. The method is used for displaying

@@ -143,7 +143,8 @@ class BuildFeatures extends MazeGraph {
   private List<Integer> pitListGeneration(int limit, int total, List<Integer> hallway, int wampus,
                                           List<Integer> goldList) {
     List<Integer> list = new ArrayList<>();
-    while (list.size() < total) {
+
+    for (int i = 0; i < total; i++) {
       int num = AbstractIMaze.random.nextInt(limit);
       if (!list.contains(num) && !hallway.contains(num) && !goldList.contains(num)
               && wampus != num) {
@@ -167,7 +168,7 @@ class BuildFeatures extends MazeGraph {
   private List<Integer> goldAndBatListGeneration(int totalNodes, int total, List<Integer> hallway,
                                                  int wampus) {
     List<Integer> list = new ArrayList<>();
-    while (list.size() < total) {
+    for (int i = 0; i < total; i++) {
       int num = AbstractIMaze.random.nextInt(totalNodes);
       if (!list.contains(num) && !hallway.contains(num) && wampus != num) {
         list.add(num);

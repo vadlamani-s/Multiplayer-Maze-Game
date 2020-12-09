@@ -13,7 +13,7 @@ public enum Messages {
   /**
    * The Bat missed the pickup.
    */
-  NOTBAT("Aaaah, Bat missed you!!!"),
+  NOTBAT(":(, Bat missed you!!!"),
   /**
    * The Pit encounter message.
    */
@@ -21,7 +21,7 @@ public enum Messages {
   /**
    * The Wampus encounter message.
    */
-  WAMPUS("You just encountered a Wampus and killed!!!"),
+  WAMPUS("You just encountered a Wampus and were killed!!!"),
   /**
    * The Gameover message.
    */
@@ -37,7 +37,7 @@ public enum Messages {
   /**
    * The NoArrows message.
    */
-  NOARROWS("You have no arrows left"),
+  NOARROWS("You have no arrows left. Game's Over"),
   /**
    * The Wampusmiss message.
    */
@@ -56,6 +56,9 @@ public enum Messages {
    */
   BATPIT("Bat picked you up and dropped you on the pit"),
 
+  /**
+   * The BatWampus message.
+   */
   BATWAMPUS("Bat picked you up and dropped you on the Wampus :("),
 
   /**

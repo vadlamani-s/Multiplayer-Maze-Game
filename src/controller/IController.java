@@ -4,7 +4,8 @@ import java.io.IOException;
 
 import maze.IGamePlayExtended;
 
-/**The interface IController is has all the methods required to run a controller. The controller
+/**
+ * The interface IController is has all the methods required to run a controller. The controller
  * acts as the brain of project delegating work between the view and the model.
  */
 

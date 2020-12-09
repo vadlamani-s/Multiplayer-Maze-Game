@@ -3,20 +3,20 @@ breeze : breeze.png
 east : E.png
 east,west : EW.png
 north : N.png
-north, east : NE.png
-north, east, west : NEW.png
-north, south : NS.png
-north, south, east : NSE.png
-north, south, east, west : NSEW.png
-north, south, west : NSW.png
-north, west : NW.png
+north,east : NE.png
+north,east,west : NEW.png
+north,south : NS.png
+north,south,east : NSE.png
+north,south,east,west : NSEW.png
+north,south,west : NSW.png
+north,west : NW.png
 pit : pit.png
 player1 : player1.png
 player2 : player2.png
 south : S.png
-south, east : SE.png
-south, east, west : SWE.png
+south,east : SE.png
+south,east,west : SWE.png
 stench : stench.png
-south, west : SW.png
+south,west : SW.png
 west : W.png
 wumpus : wumpus.png

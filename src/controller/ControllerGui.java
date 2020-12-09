@@ -28,12 +28,14 @@ import maze.NonPerfectMaze;
 import maze.PerfectMaze;
 import view.FormView;
 import view.IView;
-import view.MazeViewNew;
+import view.MazeView;
 
 /**
- * The type Controller gui.
+ * The ControllerGui implements the IControllerGui interface and has methods to start the game using
+ * the model which is taken as an input. The controller makes decisions about the gameplay and
+ * dedicates the task of the view and model.
  */
-public class ControllerGui implements Features {
+public class ControllerGui implements IControllerGui {
 
   private IView view;
   private IGamePlayMultiplayer model;
@@ -51,17 +53,14 @@ public class ControllerGui implements Features {
   private final String path = Paths.get("").toAbsolutePath().toString() + "\\" + "res\\"
           + "hunt-the-wumpus-images\\hunt-the-wumpus-images\\";
 
-
-//  private final String path = "C:/Users/Satyanarayana/Documents/CS5010/projects/HW6/"
-
   private final Map<Set<String>, String> textImageMap;
   private final int seed;
-
   private final Map<String, Directions> stringDirectionsMap;
 
 
   /**
-   * Instantiates a new Controller gui.
+   * Instantiates a new ControllerGui object with instance variables. The constructor loads the
+   * hashmap with image names as well as the corresponding image paths.
    */
   public ControllerGui() {
     Random random = new Random();
@@ -83,7 +82,6 @@ public class ControllerGui implements Features {
     stringDirectionsMap.put("west", Directions.WEST);
 
   }
-
 
   private void populateMap(Map<Set<String>, String> textImageMap) {
     textImageMap.put(new HashSet<>() {
@@ -227,9 +225,10 @@ public class ControllerGui implements Features {
 
 
   /**
-   * Sets view.
+   * Sets view passes the control of the view to the controller. It also sets the features of the
+   * view as well as the key board features.
    *
-   * @param v the v
+   * @param v the v is the view object that is passed to the controller
    */
   public void setView(IView v) {
     view = v;
@@ -379,22 +378,23 @@ public class ControllerGui implements Features {
     Messages messages;
     Directions direction = stringDirectionsMap.get(move);
     try {
+      view.setStatus(String.format("%s's turn | arrows left: %d | position: %s,%s",
+              playerIndices.get(0).split(",")[1], model.getArrows(), model.getPlayerPosRow(),
+              model.getPlayerPosColumn()), path
+              + playerIndices.get(0).split(",")[1] + ".png");
       int number = shootMoves.equals("") ? 0 : getShootMoves(shootMoves);
       if (actionFlag) {
         messages = model.arrowMakeMove(direction, number);
-        model.changePlayer(shufflePlayer());
-        view.setStatus(String.format("%s's turn | arrows left: %d",
-                playerIndices.get(0).split(",")[1], model.getArrows()), path
-                + playerIndices.get(0).split(",")[1] + ".png");
       } else {
         messages = model.makeMove(direction);
         playGame(false);
         // player's state changed
-        model.changePlayer(shufflePlayer());
-        view.setStatus(String.format("%s's turn | arrows left: %d",
-                playerIndices.get(0).split(",")[1], model.getArrows()), path
-                + playerIndices.get(0).split(",")[1] + ".png");
       }
+      model.changePlayer(shufflePlayer());
+      view.setStatus(String.format("%s's turn | arrows left: %d | position: %s,%s",
+              playerIndices.get(0).split(",")[1], model.getArrows(), model.getPlayerPosRow(),
+              model.getPlayerPosColumn()), path
+              + playerIndices.get(0).split(",")[1] + ".png");
       messageCheck(messages);
     } catch (Exception e) {
       view.popUpBox(e.getMessage());
@@ -416,7 +416,7 @@ public class ControllerGui implements Features {
   @Override
   public void processMazeType(String mazeType) {
     this.mazeType = mazeType;
-    view.remainingWallsFieldState(!mazeType.equals("perfect") && !mazeType.equals(" "));
+    view.remainingWallsFieldState(!mazeType.equals("perfect") && !mazeType.equals(""));
   }
 
   //Players are updated to the Map having playerName and index
@@ -471,11 +471,9 @@ public class ControllerGui implements Features {
     try {
       if (mazeType == null || mazeType.equals("")) {
         throw new IllegalArgumentException("Select the Maze Type");
-      }
-      if (mazeType.equals("perfect")) {
+      } else if (mazeType.equals("perfect")) {
         maze = new PerfectMaze(rows, columns, wrapping, batPercentage, pitPercentage);
-      }
-      if (mazeType.equals("imperfect")) {
+      } else if (mazeType.equals("imperfect")) {
         maze = new NonPerfectMaze(rows, columns, remainingWalls, wrapping,
                 batPercentage, pitPercentage);
       }
@@ -485,7 +483,7 @@ public class ControllerGui implements Features {
       return;
     }
     view.disableVisibility();
-    view = new MazeViewNew(rows, columns, this);
+    view = new MazeView(rows, columns, this);
     view.resetFocus();
     setView(view);
     playGame(true);
@@ -502,24 +500,25 @@ public class ControllerGui implements Features {
   }
 
 
-  /**
-   * Update image.
-   *
-   * @throws IOException the io exception
-   */
-
-  public void updateImage() throws IOException {
+  private void updateImage() throws IOException {
     // Method for populating the view with images
     for (int i = 0; i < rows; i++) {
       for (int j = 0; j < columns; j++) {
         int number = getCoordinateToNumber(i, j);
         BufferedImage image = getImage(path + getImage(i, j));
         if (model.getBatList().contains(number)) {
-          String batPath = path + "bats.png";
+          Set<String> tempBat = new HashSet<>() {
+            {
+              add("bat");
+            }
+          };
+          String batPath = path + textImageMap.get(tempBat);
           image = overlay(image, batPath, 0);
         }
         if (model.getPitList().contains(number)) {
-          String pitPath = path + "pit.png";
+          Set<String> tempPit = new HashSet<>();
+          tempPit.add("pit");
+          String pitPath = path + textImageMap.get(tempPit);
           image = overlay(image, pitPath, 0);
         }
         view.populateImage(i, j, new ImageIcon(image));
@@ -528,7 +527,9 @@ public class ControllerGui implements Features {
   }
 
   private void initialiseWampus() throws IOException {
-    String wampusPath = path + "wumpus.png";
+    Set<String> tempWampus = new HashSet<>();
+    tempWampus.add("wumpus");
+    String wampusPath = path + textImageMap.get(tempWampus);
     int[] location = this.getNumberToCoordinate(model.getWampusLocation());
     ImageIcon imageIcon = (ImageIcon) view.getImage(location[0], location[1]);
     BufferedImage image = (BufferedImage) imageIcon.getImage();
@@ -541,8 +542,12 @@ public class ControllerGui implements Features {
     while (count < playerIndices.size()) {
       StringBuilder stringBuilder = model.hintImpl(model.getPlayerPosRow(),
               model.getPlayerPosColumn());
-      String stenchPath = path + "stench.png";
-      String breezePath = path + "breeze.png";
+      Set<String> tempStench = new HashSet<>();
+      tempStench.add("stench");
+      String stenchPath = path + textImageMap.get(tempStench);
+      Set<String> tempBreeze = new HashSet<>();
+      tempBreeze.add("breeze");
+      String breezePath = path + textImageMap.get(tempBreeze);
       if (stringBuilder.indexOf("Wampus near by\n") >= 0) {
         ImageIcon imageIcon = (ImageIcon) view.getImage(model.getPlayerPosRow(),
                 model.getPlayerPosColumn());
@@ -573,8 +578,9 @@ public class ControllerGui implements Features {
       count++;
       model.changePlayer(shufflePlayer());
     }
-    view.setStatus(String.format("%s's turn | arrows left: %d",
-            playerIndices.get(0).split(",")[1], model.getArrows()), path
+    view.setStatus(String.format("%s's turn | arrows left: %d | position: %s,%s",
+            playerIndices.get(0).split(",")[1], model.getArrows(), model.getPlayerPosRow(),
+            model.getPlayerPosColumn()), path
             + playerIndices.get(0).split(",")[1] + ".png");
   }
 
@@ -647,28 +653,28 @@ public class ControllerGui implements Features {
       this.move("north", false, "0");
     });
     keyPresses.put(KeyEvent.VK_DOWN, () -> {
-              this.move("south", false, "0");
-            }
+      this.move("south", false, "0");
+    }
     );
     keyPresses.put(KeyEvent.VK_LEFT, () -> {
-              this.move("west", false, "0");
-            }
+      this.move("west", false, "0");
+    }
     );
     keyPresses.put(KeyEvent.VK_RIGHT, () -> {
-              this.move("east", false, "0");
-            }
+      this.move("east", false, "0");
+    }
     );
     keyPresses.put(KeyEvent.VK_C, () -> {
-              this.bounty();
-            }
+      this.bounty();
+    }
     );
 
     keyReleases.put(KeyEvent.VK_C, () -> {
-            }
+    }
     );
 
     keyTyped.put((char) KeyEvent.VK_C, () -> {
-            }
+    }
     );
 
 
@@ -701,8 +707,8 @@ public class ControllerGui implements Features {
   public String toString() {
     return "mazeType='" + mazeType + '\''
             + ", playerOption=" + playerOption
-            + ", rows=" + rows +
-            ", columns=" + columns
+            + ", rows=" + rows
+            + ", columns=" + columns
             + ", remainingWalls=" + remainingWalls
             + ", batPercentage=" + batPercentage
             + ", pitPercentage=" + pitPercentage

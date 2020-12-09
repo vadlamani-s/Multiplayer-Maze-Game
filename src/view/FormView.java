@@ -18,10 +18,12 @@ import javax.swing.JOptionPane;
 
 
 import controller.ControllerGui;
-import controller.Features;
+import controller.IControllerGui;
 
 /**
- * The type Form view.
+ * The type Form view is the class used for creating the view required for taking in the inputs for
+ * creating the maze in the game. It has all the functionalities for creating the maze as well as
+ * the players to be used in the game.
  */
 public class FormView extends JFrame implements IView {
 
@@ -52,10 +54,11 @@ public class FormView extends JFrame implements IView {
 
 
   /**
-   * Instantiates a new Form view.
+   * Instantiates a new Form view constructor with all the elements for building the maze. The
+   * constructor initialises the title as well as the controller.
    *
-   * @param title      the title
-   * @param controller the controller
+   * @param title      the title displayed on the frame
+   * @param controller the controller of the GUI
    */
   public FormView(String title, ControllerGui controller) {
     super(title);
@@ -283,22 +286,22 @@ public class FormView extends JFrame implements IView {
   }
 
   @Override
-  public void setFeatures(Features features) {
-    mazeSelection.addItemListener(l -> features.processMazeType((String) ((JComboBox)
+  public void setFeatures(IControllerGui iControllerGui) {
+    mazeSelection.addItemListener(l -> iControllerGui.processMazeType((String) ((JComboBox)
             l.getSource()).getSelectedItem()));
 
-    playerSelection.addItemListener(l -> features.playerInGame((String) ((JComboBox)
+    playerSelection.addItemListener(l -> iControllerGui.playerInGame((String) ((JComboBox)
             l.getSource()).getSelectedItem()));
 
     submit.addActionListener(l -> {
       try {
-        features.processInput(processForm());
+        iControllerGui.processInput(processForm());
       } catch (IOException e) {
         e.printStackTrace();
       }
     });
 
-    cancelButton.addActionListener(l -> features.exit());
+    cancelButton.addActionListener(l -> iControllerGui.exit());
   }
 
   private String processForm() {

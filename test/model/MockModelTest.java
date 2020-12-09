@@ -6,45 +6,43 @@ import org.junit.Test;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
+
 import controller.Controller;
-import model.MockModel;
 
 import static org.junit.Assert.assertEquals;
 
 
 /**
- * The type Mock model test.
+ * The type Mock model test is usd for testing a mock model.
  */
 public class MockModelTest {
 
   /**
    * The In.
    */
-  Reader in;
+  private Reader in;
   /**
    * The Out.
    */
-  StringBuffer out;
+  private StringBuffer out;
   /**
    * The Controller.
    */
-  Controller controller;
+  private Controller controller;
   /**
    * The Model.
    */
-  MockModel model;
+  private MockModel model;
   /**
    * The Builder.
    */
-  StringBuilder builder;
+  private StringBuilder builder;
 
   /**
    * Sets up.
-   *
-   * @throws Exception the exception
    */
   @Before
-  public void setUp() throws Exception {
+  public void setUp() {
     out = new StringBuffer();
     builder = new StringBuilder();
     model = new MockModel(builder, 10000);

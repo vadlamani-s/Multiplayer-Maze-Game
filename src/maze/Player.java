@@ -17,11 +17,12 @@ public class Player {
   private int arrows;
 
   /**
-   * Instantiates a new Player.
+   * Instantiates a new Player in the maze with corresponding row and column number as well as the
+   * total columns in the maze.
    *
-   * @param posRow       the pos row
-   * @param posCol       the pos col
-   * @param totalColumns the total columns
+   * @param posRow       the pos row in the maze
+   * @param posCol       the pos col in the maze
+   * @param totalColumns the total columns in the maze
    */
   public Player(int posRow, int posCol, int totalColumns) {
     this.goldCount = 0;
@@ -30,7 +31,6 @@ public class Player {
     this.moveMemory = new HashSet<>();
     this.arrows = 3;
   }
-
 
   /**
    * Gets arrows the player currently holds.
@@ -48,12 +48,11 @@ public class Player {
     this.arrows = arrows - 1;
   }
 
-
   /**
    * Calculate the position or room number using coordinates.
    *
-   * @param row the row
-   * @param col the col
+   * @param row the row number
+   * @param col the col number
    * @return the player position corresponding to the room.
    */
   public int calculateNumber(int row, int col) {
@@ -64,7 +63,7 @@ public class Player {
   /**
    * Sets the Gold count of the player.
    *
-   * @param goldCount gold count
+   * @param goldCount gold count of the player
    */
   public void updatePlayerGold(float goldCount) {
     this.goldCount = goldCount;
@@ -82,7 +81,7 @@ public class Player {
 
 
   /**
-   * Gets player row.
+   * Gets player row in the maze.
    *
    * @return the player row
    */
@@ -92,7 +91,7 @@ public class Player {
 
 
   /**
-   * Gets player col.
+   * Gets player col in the maze.
    *
    * @return the player col
    */

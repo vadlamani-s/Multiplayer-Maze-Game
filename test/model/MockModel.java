@@ -8,7 +8,7 @@ import maze.IGamePlayExtended;
 import maze.Messages;
 
 /**
- * The type Mock model.
+ * The type Mock model is used for testing the controller by defining a mock class.
  */
 public class MockModel implements IGamePlayExtended {
 

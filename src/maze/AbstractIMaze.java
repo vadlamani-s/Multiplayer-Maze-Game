@@ -49,12 +49,12 @@ public abstract class AbstractIMaze implements IMaze {
   /**
    * Instantiates a new Abstract i maze.
    *
-   * @param rows           the rows
-   * @param columns        the columns
-   * @param remainingWalls the remaining walls
-   * @param wrappingCheck  the wrapping check
-   * @param batPercentage  the bat percentage
-   * @param pitPercentage  the pit percentage
+   * @param rows           the rows of the maze
+   * @param columns        the columns of the maze
+   * @param remainingWalls the remaining walls for imperfect maze
+   * @param wrappingCheck  the wrapping check for checking if wrapping or not
+   * @param batPercentage  the bat percentage for setting in the maze
+   * @param pitPercentage  the pit percentage for setting in the maze
    */
   public AbstractIMaze(int rows, int columns, int remainingWalls, Boolean wrappingCheck,
                        int batPercentage, int pitPercentage) {

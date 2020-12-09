@@ -4,7 +4,7 @@ import view.IView;
 
 
 /**
- * The type Driver multi player.
+ * The type Driver multi player is used for running the maze between text and GUI based maze game.
  */
 public class DriverMultiPlayer {
 
@@ -15,7 +15,7 @@ public class DriverMultiPlayer {
    */
   public static void main(String[] args) {
 
-    if (args.length == 0) {
+    if (args.length <= 0) {
       throw new IllegalArgumentException("Argument not provided");
     } else {
       if (args[0].equals("--text")) {

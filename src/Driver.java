@@ -14,7 +14,7 @@ import maze.NonPerfectMaze;
 import maze.PerfectMaze;
 
 /**
- * The type Driver.
+ * The type Driver for running the text based maze game.
  */
 public class Driver {
   /**

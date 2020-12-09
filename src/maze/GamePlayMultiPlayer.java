@@ -6,7 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * The type Game play multi player.
+ * The type Game play multi player class is used for making the moves of the player, shooting arrows
+ * as well as switching between multiple players in the game.
  */
 public class GamePlayMultiPlayer extends GamePlayExtended implements IGamePlayMultiplayer {
 
