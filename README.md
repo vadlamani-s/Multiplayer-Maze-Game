@@ -1,5 +1,5 @@
 # Multiplayer-Maze-Game
-##How to run the program:
+## How to run the program:
 The program can be run by using the JAR file present in the ZIP folder.
 1. The Zip folder contains 3 folders. 
 2. Navigate to the 'res' folder which contains the HW6.jar file.
@@ -11,7 +11,7 @@ the text based game.
 
 Note: Make sure JAVA class path has been added to the environment variables.
 
-##Design:
+## Design:
 1. An interface has been created for a building a maze with an abstract class implementing the 
 interface.
 2. There are 2 concrete classes namely perfect maze and non-perfect maze. A wrapping maze has been
@@ -30,7 +30,7 @@ features required to build the maze. The other class has been used for making th
 the maze as well as the player movement during the game.
 
 
-##Design Changes:
+## Design Changes:
 1. A new class called GamePlayMultiPlayer has been created which extends the previous created 
 GamePlayExtended class to accomodate the new changes of player switching as well as to add the 
 additional functionality of making the game multi player based.
@@ -67,7 +67,7 @@ they race to be the first to kill the Wumpus. In this mode, the rules of the gam
  is.
  Tested completely.
 
-##Assumptions:
+## Assumptions:
 1. The bats and pits percentage calculation is done after creation of the hallways.
 2. The bats remain come back to their own location after the player is picked up and transported.
 3. A 3X3 maze cannot be created.
@@ -81,10 +81,10 @@ they race to be the first to kill the Wumpus. In this mode, the rules of the gam
 11. The mouse click in the game is taken throught button rather than maze clicks. 
 12. Only arrows have been configured for player movement and arrows has not been configured.
 
-##Demo:
+## Demo:
 `https://youtu.be/BuK3S4sIgyo`
-https://youtu.be/YsWA7StLSCg
-https://youtu.be/luLzYE7FULI
+`https://youtu.be/YsWA7StLSCg`
+`https://youtu.be/luLzYE7FULI`
 The above the link for the demo of the game play. The first frame which appears on the screen is the view 
 for taking in all the inputs required for building the maze. In the video a 2 player maze has been built,
 which is of an imperfect type.
